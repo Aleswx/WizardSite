@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+<title>Qual é o seu nível real de inglês?</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --red: #e2001a;
+    --red-dark: #b50014;
+    --black: #1a1a1a;
+    --white: #ffffff;
+    --grey-bg: #f4f4f5;
+    --muted: #6e6e76;
+    --track: #e6e6e9;
+    --shadow: rgba(0,0,0,.10);
+    --radius: 16px;
+    color-scheme: light;
+  }
+  *{ box-sizing:border-box; }
+  html,body{ margin:0; padding:0; }
+  body{
+    background: var(--grey-bg);
+    color: var(--black);
+    font-family:'Inter', sans-serif;
+    min-height:100vh;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding: 28px 16px;
+    padding-top: max(28px, env(safe-area-inset-top, 0px));
+    padding-bottom: max(28px, env(safe-area-inset-bottom, 0px));
+    line-height:1.5;
+  }
+  h1,h2,h3{ font-family:'Poppins', sans-serif; font-weight:700; letter-spacing:-0.01em; margin:0; }
+
+  .wrap{ width:100%; max-width: 460px; }
+
+  .topbar{
+    display:flex; align-items:center; justify-content:space-between;
+    padding: 0 4px 14px;
+  }
+  .logo{
+    font-family:'Poppins', sans-serif; font-weight:800; font-size:15px;
+    color: var(--black);
+  }
+  .logo span{ color: var(--red); }
+  .badge{
+    font-size:11.5px; font-weight:600; color: var(--red);
+    background: #fdeaec; padding:5px 10px; border-radius:999px;
+  }
+
+  .card{
+    background: var(--white);
+    border-radius: var(--radius);
+    box-shadow: 0 18px 40px var(--shadow);
+    overflow:hidden;
+  }
+  .accent-bar{ height:6px; background: var(--red); }
+  .card-inner{ padding: 32px 26px 28px; }
+
+  .screen{ display:none; }
+  .screen.active{ display:block; animation: rise .45s ease both; }
+  @keyframes rise{ from{opacity:0; transform:translateY(8px);} to{opacity:1; transform:none;} }
+
+  /* hero */
+  .eyebrow{ color: var(--red); font-size:13.5px; font-weight:600; margin-bottom:10px; }
+  h1.hero-title{ font-size:28px; line-height:1.2; margin-bottom:12px; }
+  .hero-title .hl{ color: var(--red); }
+  .hero-sub{ color: var(--muted); font-size:15px; margin-bottom:24px; max-width:38ch; }
+  .checklist{ list-style:none; padding:0; margin:0 0 26px; display:flex; flex-direction:column; gap:8px; }
+  .checklist li{ display:flex; gap:8px; font-size:14px; color: var(--black); align-items:flex-start; }
+  .checklist li::before{ content:"✔"; color: var(--red); font-weight:700; flex-shrink:0; }
+
+  .btn{
+    width:100%; border:none; border-radius: 10px;
+    padding:15px 20px; font-family:'Poppins',sans-serif; font-weight:700;
+    font-size:15px; cursor:pointer; margin-bottom:10px;
+    transition: filter .15s ease, transform .1s ease;
+  }
+  .btn:hover{ filter:brightness(1.08); }
+  .btn:active{ transform: scale(.99); }
+  .btn-primary{ background: var(--red); color: var(--white); }
+  .btn-secondary{ background: var(--grey-bg); color: var(--black); border:1px solid var(--track); }
+
+  /* progress */
+  .progress-track{ height:6px; background: var(--track); border-radius:999px; margin-bottom:24px; overflow:hidden; }
+  .progress-fill{ height:100%; background: var(--red); width:0%; transition: width .35s ease; border-radius:999px; }
+
+  .q-num{ color:var(--muted); font-size:13px; margin:0 0 8px; font-weight:600; }
+  .q-text{ font-size:20px; line-height:1.32; margin:0 0 22px; }
+
+  .options{ display:flex; flex-direction:column; gap:10px; }
+  .option{
+    text-align:left; background: var(--white); border:1.5px solid var(--track);
+    color: var(--black); border-radius: 10px; padding:14px 16px;
+    font-family:'Inter', sans-serif; font-size:15px; cursor:pointer;
+    transition: border-color .15s ease, background .15s ease, transform .1s ease;
+  }
+  .option:hover{ border-color: var(--red); }
+  .option:active{ transform: scale(.99); }
+  .option.picked{ border-color: var(--red); background:#fdeaec; }
+
+  /* result + form */
+  .result-label{ color:var(--red); font-size:13.5px; font-weight:600; margin:0 0 6px; }
+  .result-title{ font-size:25px; margin:0 0 12px; }
+  .result-blurb{ font-size:15px; color: var(--black); margin:0 0 8px; }
+  .score-chip{
+    display:inline-block; background: var(--grey-bg); color:var(--muted);
+    font-size:13px; font-weight:600; padding:6px 12px; border-radius:999px; margin-bottom:22px;
+  }
+
+  .divider{ height:1px; background: var(--track); margin: 22px 0; }
+  .form-title{ font-size:16px; margin:0 0 4px; }
+  .form-sub{ font-size:13.5px; color:var(--muted); margin:0 0 18px; }
+
+  .field{ margin-bottom: 14px; }
+  .field label{ display:block; font-size:13px; font-weight:600; color: var(--black); margin-bottom:6px; }
+  .field input{
+    width:100%; background: var(--white); border:1.5px solid var(--track);
+    border-radius:8px; padding:12px 13px; color:var(--black);
+    font-family:'Inter', sans-serif; font-size:14.5px;
+  }
+  .field input:focus{ outline:2px solid var(--red); border-color:transparent; }
+  .field-row{ display:flex; gap:10px; }
+  .field-row .field{ flex:1; }
+
+  .consent{ display:flex; gap:8px; align-items:flex-start; margin: 16px 0 20px; }
+  .consent input{ margin-top:3px; accent-color: var(--red); flex-shrink:0; }
+  .consent label{ font-size:12.5px; color: var(--muted); line-height:1.5; }
+
+  .fine{ text-align:center; color:var(--muted); font-size:12.5px; margin-top:6px; }
+  .fine button{ background:none; border:none; color:var(--muted); text-decoration:underline; cursor:pointer; font-size:12.5px; padding:0; }
+
+  /* success */
+  .success-icon{ font-size:44px; margin-bottom:14px; }
+  .success-title{ font-size:23px; margin-bottom:8px; }
+  .success-sub{ font-size:15px; color:var(--muted); margin-bottom:24px; }
+
+  @media (prefers-reduced-motion: reduce){
+    .screen.active{ animation:none; }
+    .btn, .option{ transition:none; }
+  }
+</style>
+</head>
+<body>
+
+<div class="wrap">
+  <div class="topbar">
+    <div class="logo">SUA<span>ESCOLA</span></div>
+    <div class="badge">100% gratuito</div>
+  </div>
+
+  <div class="card">
+    <div class="accent-bar"></div>
+    <div class="card-inner">
+
+      <!-- HERO -->
+      <section class="screen active" id="screen-hero">
+        <p class="eyebrow">teste de inglês</p>
+        <h1 class="hero-title">Qual é o seu <span class="hl">nível real</span> de inglês?</h1>
+        <p class="hero-sub">Descubra em poucos minutos onde você está e qual é o próximo passo ideal pra evoluir.</p>
+        <ul class="checklist">
+          <li>Faça de onde estiver, no seu tempo</li>
+          <li>Resultado rápido, com avaliação clara do seu nível</li>
+          <li>100% gratuito e sem compromisso</li>
+        </ul>
+        <button class="btn btn-primary" id="start-btn">Fazer o teste</button>
+      </section>
+
+      <!-- QUIZ -->
+      <section class="screen" id="screen-quiz">
+        <div class="progress-track"><div class="progress-fill" id="progress-fill"></div></div>
+        <p class="q-num" id="q-num">Pergunta 1 de 7</p>
+        <h2 class="q-text" id="q-text"></h2>
+        <div class="options" id="q-options"></div>
+      </section>
+
+      <!-- RESULT + FORM -->
+      <section class="screen" id="screen-result">
+        <p class="result-label">seu resultado</p>
+        <h2 class="result-title" id="result-title"></h2>
+        <p class="result-blurb" id="result-blurb"></p>
+        <span class="score-chip" id="result-score"></span>
+
+        <div class="divider"></div>
+
+        <h3 class="form-title">Quer saber mais sobre nossos cursos?</h3>
+        <p class="form-sub">Preencha os campos e aguarde nosso contato.</p>
+
+        <form id="lead-form">
+          <div class="field">
+            <label for="f-name">Nome</label>
+            <input id="f-name" type="text" required placeholder="Seu nome completo" />
+          </div>
+          <div class="field-row">
+            <div class="field">
+              <label for="f-email">E-mail</label>
+              <input id="f-email" type="email" required placeholder="voce@email.com" />
+            </div>
+          </div>
+          <div class="field">
+            <label for="f-phone">Telefone (com DDD)</label>
+            <input id="f-phone" type="tel" required placeholder="(00) 00000-0000" />
+          </div>
+
+          <div class="consent">
+            <input type="checkbox" id="f-consent" required />
+            <label for="f-consent">Aceito receber comunicação e ofertas sobre os cursos.</label>
+          </div>
+
+          <button class="btn btn-primary" type="submit">Quero saber mais</button>
+        </form>
+
+        <p class="fine">Não quer deixar contato agora? <button id="restart-btn">Refazer o teste</button></p>
+      </section>
+
+      <!-- SUCCESS -->
+      <section class="screen" id="screen-success">
+        <div class="success-icon">🎉</div>
+        <h2 class="success-title">Sucesso!</h2>
+        <p class="success-sub">Em breve, nossa equipe entrará em contato com você.</p>
+        <button class="btn btn-primary" id="whatsapp-btn">Falar agora pelo WhatsApp</button>
+        <button class="btn btn-secondary" id="restart-btn-2">Voltar ao início</button>
+      </section>
+
+    </div>
+  </div>
+</div>
+
+<script>
+(function(){
+  const WHATSAPP_NUMBER = "5511999999999"; // <-- SUBSTITUIR pelo WhatsApp da escola antes de publicar de verdade
+  const API_BASE_URL = ""; // <-- SUBSTITUIR pela URL do backend publicado (ex: "https://seu-backend.up.railway.app"). Deixe "" pra desativar o envio.
+
+  const questions = [
+    { q: "Você está prestes a assistir uma série nova na Netflix. O que você faz?",
+      options: [
+        { label: "Coloco em português, sem pensar duas vezes", pts: 0 },
+        { label: "Coloco legenda em inglês, pra treinar o ouvido", pts: 1 },
+        { label: "Assisto sem legenda nenhuma", pts: 2 },
+      ]},
+    { q: "Qual dessas frases quer dizer \"estou exausto\"?",
+      options: [
+        { label: "\"I'm starving\"", pts: 0 },
+        { label: "\"I'm beat\"", pts: 2 },
+        { label: "\"I'm broke\"", pts: 0 },
+      ]},
+    { q: "Chega um e-mail em inglês do trabalho. Sua reação:",
+      options: [
+        { label: "Traduzo cada palavra no tradutor", pts: 0 },
+        { label: "Leio rápido e entendo o essencial", pts: 1 },
+        { label: "Leio e já penso na resposta em inglês", pts: 2 },
+      ]},
+    { q: "Complete: \"I've been working here ___ three years.\"",
+      options: [
+        { label: "since", pts: 0 },
+        { label: "for", pts: 2 },
+        { label: "at", pts: 0 },
+      ]},
+    { q: "Você pede comida em um restaurante fora do Brasil. Como se sai?",
+      options: [
+        { label: "Aponto pro cardápio e sorrio", pts: 0 },
+        { label: "Peço com frases simples, meio decoradas", pts: 1 },
+        { label: "Converso e ainda pergunto a recomendação do garçom", pts: 2 },
+      ]},
+    { q: "O que significa a expressão \"it's a piece of cake\"?",
+      options: [
+        { label: "É uma receita de bolo", pts: 0 },
+        { label: "É muito fácil", pts: 2 },
+        { label: "É uma pena", pts: 0 },
+      ]},
+    { q: "Alguém te chama pra uma call em inglês de última hora. Você:",
+      options: [
+        { label: "Entro em pânico e tento adiar", pts: 0 },
+        { label: "Entro, mas fico mais quieto ouvindo", pts: 1 },
+        { label: "Entro numa boa e participo normalmente", pts: 2 },
+      ]},
+  ];
+
+  const tiers = [
+    { min:0, max:5, title:"Nível Iniciante", blurb:"Você ainda apoia bastante no português no dia a dia — e tudo bem, é exatamente daqui que todo mundo começa." },
+    { min:6, max:9, title:"Nível Básico a Intermediário", blurb:"Você já entende o essencial e está treinando o ouvido. Falta destravar a confiança pra parar de traduzir na cabeça." },
+    { min:10, max:12, title:"Nível Intermediário Avançado", blurb:"Você se vira bem em situações reais e já pensa em inglês boa parte do tempo." },
+    { min:13, max:14, title:"Nível Avançado", blurb:"Você lida com inglês quase como um nativo. A essa altura, é sobre refinar nuance e vocabulário." },
+  ];
+
+  let current = 0, score = 0;
+
+  const screens = {
+    hero: document.getElementById("screen-hero"),
+    quiz: document.getElementById("screen-quiz"),
+    result: document.getElementById("screen-result"),
+    success: document.getElementById("screen-success"),
+  };
+  function showScreen(name){
+    Object.values(screens).forEach(s => s.classList.remove("active"));
+    screens[name].classList.add("active");
+  }
+
+  function renderQuestion(){
+    const item = questions[current];
+    document.getElementById("q-num").textContent = "Pergunta " + (current + 1) + " de " + questions.length;
+    document.getElementById("q-text").textContent = item.q;
+    document.getElementById("progress-fill").style.width = ((current / questions.length) * 100) + "%";
+
+    const optsEl = document.getElementById("q-options");
+    optsEl.innerHTML = "";
+    item.options.forEach(opt => {
+      const btn = document.createElement("button");
+      btn.className = "option";
+      btn.type = "button";
+      btn.textContent = opt.label;
+      btn.addEventListener("click", () => selectOption(btn, opt.pts));
+      optsEl.appendChild(btn);
+    });
+  }
+
+  function selectOption(btn, pts){
+    Array.from(document.getElementById("q-options").children).forEach(b => {
+      b.classList.remove("picked"); b.disabled = true;
+    });
+    btn.classList.add("picked");
+    score += pts;
+    setTimeout(() => {
+      current++;
+      if (current < questions.length){
+        renderQuestion();
+      } else {
+        document.getElementById("progress-fill").style.width = "100%";
+        setTimeout(showResult, 250);
+      }
+    }, 380);
+  }
+
+  function getTier(s){ return tiers.find(t => s >= t.min && s <= t.max) || tiers[0]; }
+
+  function showResult(){
+    const tier = getTier(score);
+    document.getElementById("result-title").textContent = tier.title;
+    document.getElementById("result-blurb").textContent = tier.blurb;
+    document.getElementById("result-score").textContent = score + " / 14 pontos";
+    showScreen("result");
+  }
+
+  document.getElementById("start-btn").addEventListener("click", () => {
+    current = 0; score = 0;
+    renderQuestion();
+    showScreen("quiz");
+  });
+
+  document.querySelectorAll("#restart-btn, #restart-btn-2").forEach(b => {
+    b.addEventListener("click", () => { current = 0; score = 0; showScreen("hero"); });
+  });
+
+  document.getElementById("lead-form").addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const tier = getTier(score);
+    const payload = {
+      name: document.getElementById("f-name").value.trim(),
+      email: document.getElementById("f-email").value.trim(),
+      phone: document.getElementById("f-phone").value.trim(),
+      score,
+      tier: tier.title,
+    };
+
+    if (API_BASE_URL) {
+      try {
+        await fetch(API_BASE_URL + "/api/leads", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload),
+        });
+      } catch (err) {
+        console.error("Não foi possível salvar o lead no backend:", err);
+        // segue o fluxo normalmente; o WhatsApp na tela de sucesso ainda garante o contato
+      }
+    }
+
+    showScreen("success");
+  });
+
+  document.getElementById("whatsapp-btn").addEventListener("click", () => {
+    const tier = getTier(score);
+    const name = document.getElementById("f-name").value.trim();
+    const email = document.getElementById("f-email").value.trim();
+    const phone = document.getElementById("f-phone").value.trim();
+    let msg = "Oi! Fiz o teste de inglês do site e meu resultado foi \"" + tier.title + "\" (" + score + "/14). ";
+    if (name) msg = "Oi, meu nome é " + name + ". " + msg;
+    if (phone) msg += "Meu telefone: " + phone + ". ";
+    if (email) msg += "Meu e-mail: " + email + ". ";
+    msg += "Quero saber mais sobre os cursos!";
+    const url = "https://wa.me/" + WHATSAPP_NUMBER + "?text=" + encodeURIComponent(msg);
+    window.open(url, "_blank");
+  });
+})();
+</script>
+
+</body>
+</html>
