@@ -94,8 +94,8 @@
   let tierChart, timeChart;
 
   window.addEventListener("DOMContentLoaded", () => {
-    const savedBase = localStorage.getItem("dash_api_base");
-    const savedKey = localStorage.getItem("dash_api_key");
+    const savedBase = sessionStorage.getItem("dash_api_base");
+    const savedKey = sessionStorage.getItem("dash_api_key");
     if (savedBase && savedKey) {
       document.getElementById("api-base").value = savedBase;
       document.getElementById("api-key").value = savedKey;
@@ -112,8 +112,8 @@
     try {
       const res = await fetch(API_BASE + "/api/stats", { headers: { "x-api-key": API_KEY } });
       if (!res.ok) throw new Error("unauthorized");
-      localStorage.setItem("dash_api_base", API_BASE);
-      localStorage.setItem("dash_api_key", API_KEY);
+      sessionStorage.setItem("dash_api_base", API_BASE);
+      sessionStorage.setItem("dash_api_key", API_KEY);
       document.getElementById("gate").classList.add("hidden");
       document.getElementById("app").classList.remove("hidden");
       refresh();

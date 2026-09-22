@@ -233,8 +233,8 @@
 
 <script>
 (function(){
-  const API_BASE_URL = "http://localhost:3000"; // <-- troque pela URL do backend em produção
-  const WHATSAPP_NUMBER = "5511999999999"; // <-- SUBSTITUIR pelo WhatsApp da escola antes de publicar de verdade
+  const API_BASE_URL = window.location.origin || "http://localhost:3000";
+  const WHATSAPP_NUMBER = "";
 
   const questions = [
     { q: "Você está prestes a assistir uma série nova na Netflix. O que você faz?",
@@ -391,6 +391,11 @@
   });
 
   document.getElementById("whatsapp-btn").addEventListener("click", () => {
+    if (!WHATSAPP_NUMBER) {
+      alert("Configure o número do WhatsApp antes de publicar.");
+      return;
+    }
+
     const tier = getTier(score);
     const name = document.getElementById("f-name").value.trim();
     const email = document.getElementById("f-email").value.trim();
