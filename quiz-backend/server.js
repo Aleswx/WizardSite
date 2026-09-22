@@ -4,6 +4,7 @@ const cors = require("cors");
 const helmet = require("helmet");
 const rateLimit = require("express-rate-limit");
 const path = require("path");
+const { createClient } = require("@supabase/supabase-js");
 const { DatabaseSync } = require("node:sqlite");
 
 const PORT = Number(process.env.PORT) || 3000;
@@ -49,27 +50,65 @@ const leadLimiter = rateLimit({
 });
 app.use("/api/leads", leadLimiter);
 
-// ---------- database ----------
-const db = new DatabaseSync(path.join(__dirname, "leads.db"));
-db.exec("PRAGMA journal_mode = WAL;");
+const supabaseUrl = process.env.SUPABASE_URL;
+const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
+const useSupabase = Boolean(supabaseUrl && supabaseServiceKey);
 
-db.exec(`
-  CREATE TABLE IF NOT EXISTS leads (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    name TEXT NOT NULL,
-    email TEXT,
-    phone TEXT,
-    score INTEGER NOT NULL,
-    tier TEXT NOT NULL,
-    source TEXT DEFAULT 'quiz',
-    created_at TEXT NOT NULL DEFAULT (datetime('now'))
-  )
-`);
+let supabase = null;
+let db;
+let insertLead;
 
-const insertLead = db.prepare(`
-  INSERT INTO leads (name, email, phone, score, tier, source)
-  VALUES (@name, @email, @phone, @score, @tier, @source)
-`);
+if (useSupabase) {
+  supabase = createClient(supabaseUrl, supabaseServiceKey, {
+    auth: { persistSession: false, autoRefreshToken: false },
+  });
+
+  // keep a consistent app API even when using Supabase
+  db = {
+    prepare() {
+      return {
+        all: () => [],
+        get: () => ({ n: 0, avg: 0 }),
+        run: () => ({ lastInsertRowid: null }),
+      };
+    },
+  };
+
+  insertLead = async ({ name, email, phone, score, tier, source }) => {
+    const { data, error } = await supabase.from("leads").insert({
+      name,
+      email,
+      phone,
+      score,
+      tier,
+      source,
+    }).select("id").single();
+
+    if (error) throw error;
+    return { lastInsertRowid: data.id };
+  };
+} else {
+  db = new DatabaseSync(path.join(__dirname, "leads.db"));
+  db.exec("PRAGMA journal_mode = WAL;");
+
+  db.exec(`
+    CREATE TABLE IF NOT EXISTS leads (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      name TEXT NOT NULL,
+      email TEXT,
+      phone TEXT,
+      score INTEGER NOT NULL,
+      tier TEXT NOT NULL,
+      source TEXT DEFAULT 'quiz',
+      created_at TEXT NOT NULL DEFAULT (datetime('now'))
+    )
+  `);
+
+  insertLead = db.prepare(`
+    INSERT INTO leads (name, email, phone, score, tier, source)
+    VALUES (@name, @email, @phone, @score, @tier, @source)
+  `);
+}
 
 // ---------- auth middleware for dashboard endpoints ----------
 function requireApiKey(req, res, next) {
@@ -83,7 +122,7 @@ function requireApiKey(req, res, next) {
 // ---------- routes ----------
 
 // Public: quiz posts a new lead here
-app.post("/api/leads", (req, res) => {
+app.post("/api/leads", async (req, res) => {
   const { name, email, phone, score, tier, source } = req.body || {};
   const cleanName = typeof name === "string" ? name.trim() : "";
   const cleanEmail = typeof email === "string" ? email.trim() : "";
@@ -99,14 +138,21 @@ app.post("/api/leads", (req, res) => {
   }
 
   try {
-    const info = insertLead.run({
+    const payload = {
       name: cleanName.slice(0, 200),
       email: cleanEmail ? cleanEmail.slice(0, 200) : null,
       phone: cleanPhone ? cleanPhone.slice(0, 60) : null,
       score: Math.round(score),
       tier: cleanTier.slice(0, 100),
       source: source ? String(source).slice(0, 60) : "quiz",
-    });
+    };
+
+    if (useSupabase) {
+      const info = await insertLead(payload);
+      return res.status(201).json({ id: info.lastInsertRowid });
+    }
+
+    const info = insertLead.run(payload);
     return res.status(201).json({ id: info.lastInsertRowid });
   } catch (err) {
     console.error(err);
@@ -115,13 +161,43 @@ app.post("/api/leads", (req, res) => {
 });
 
 // Protected: list leads for the dashboard
-app.get("/api/leads", requireApiKey, (req, res) => {
+app.get("/api/leads", requireApiKey, async (req, res) => {
+  if (useSupabase) {
+    const { data, error } = await supabase.from("leads").select("*").order("created_at", { ascending: false });
+    if (error) return res.status(500).json({ error: error.message });
+    return res.json(data);
+  }
+
   const rows = db.prepare("SELECT * FROM leads ORDER BY created_at DESC").all();
-  res.json(rows);
+  return res.json(rows);
 });
 
 // Protected: aggregated stats for the dashboard
-app.get("/api/stats", requireApiKey, (req, res) => {
+app.get("/api/stats", requireApiKey, async (req, res) => {
+  if (useSupabase) {
+    const { data, error } = await supabase.from("leads").select("score, tier, created_at");
+    if (error) return res.status(500).json({ error: error.message });
+
+    const total = data.length;
+    const byTier = Object.entries(
+      data.reduce((acc, row) => {
+        acc[row.tier] = (acc[row.tier] || 0) + 1;
+        return acc;
+      }, {})
+    ).map(([tier, n]) => ({ tier, n })).sort((a, b) => b.n - a.n);
+
+    const byDay = Object.entries(
+      data.reduce((acc, row) => {
+        const day = new Date(row.created_at).toISOString().slice(0, 10);
+        acc[day] = (acc[day] || 0) + 1;
+        return acc;
+      }, {})
+    ).map(([day, n]) => ({ day, n })).sort((a, b) => a.day.localeCompare(b.day)).slice(-30);
+
+    const avgScore = data.length ? (data.reduce((sum, row) => sum + Number(row.score), 0) / data.length) : 0;
+    return res.json({ total, byTier, byDay, avgScore });
+  }
+
   const total = db.prepare("SELECT COUNT(*) AS n FROM leads").get().n;
 
   const byTier = db
