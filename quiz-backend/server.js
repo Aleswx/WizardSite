@@ -19,6 +19,7 @@ const ALLOWED_ORIGINS = (process.env.ALLOWED_ORIGINS || "")
   .split(",")
   .map((s) => s.trim())
   .filter(Boolean);
+const isCodespacesOrigin = (origin) => /^https:\/\/[^/]+-\d+\.app\.github\.dev$/.test(origin);
 
 const app = express();
 app.disable("x-powered-by");
@@ -30,7 +31,7 @@ app.use(express.json({ limit: "200kb" }));
 app.use(
   cors({
     origin: (origin, callback) => {
-      if (!origin || ALLOWED_ORIGINS.length === 0 || ALLOWED_ORIGINS.includes("*") || ALLOWED_ORIGINS.includes(origin)) {
+      if (!origin || ALLOWED_ORIGINS.length === 0 || ALLOWED_ORIGINS.includes("*") || ALLOWED_ORIGINS.includes(origin) || isCodespacesOrigin(origin)) {
         return callback(null, true);
       }
       return callback(new Error("Not allowed by CORS"));
@@ -74,7 +75,7 @@ if (useSupabase) {
     },
   };
 
-  insertLead = async ({ name, email, phone, score, tier, source }) => {
+  insertLead = async ({ name, email, phone, score, tier, source, answers }) => {
     const { data, error } = await supabase.from("leads").insert({
       name,
       email,
@@ -82,6 +83,7 @@ if (useSupabase) {
       score,
       tier,
       source,
+      answers,
     }).select("id").single();
 
     if (error) throw error;
@@ -100,13 +102,19 @@ if (useSupabase) {
       score INTEGER NOT NULL,
       tier TEXT NOT NULL,
       source TEXT DEFAULT 'quiz',
+      answers TEXT NOT NULL DEFAULT '[]',
       created_at TEXT NOT NULL DEFAULT (datetime('now'))
     )
   `);
 
+  const leadColumns = db.prepare("PRAGMA table_info(leads)").all();
+  if (!leadColumns.some((column) => column.name === "answers")) {
+    db.exec("ALTER TABLE leads ADD COLUMN answers TEXT NOT NULL DEFAULT '[]'");
+  }
+
   insertLead = db.prepare(`
-    INSERT INTO leads (name, email, phone, score, tier, source)
-    VALUES (@name, @email, @phone, @score, @tier, @source)
+    INSERT INTO leads (name, email, phone, score, tier, source, answers)
+    VALUES (@name, @email, @phone, @score, @tier, @source, @answers)
   `);
 }
 
@@ -123,14 +131,24 @@ function requireApiKey(req, res, next) {
 
 // Public: quiz posts a new lead here
 app.post("/api/leads", async (req, res) => {
-  const { name, email, phone, score, tier, source } = req.body || {};
+  const { name, email, phone, score, tier, source, answers } = req.body || {};
   const cleanName = typeof name === "string" ? name.trim() : "";
   const cleanEmail = typeof email === "string" ? email.trim() : "";
   const cleanPhone = typeof phone === "string" ? phone.trim() : "";
   const cleanTier = typeof tier === "string" ? tier.trim() : "";
+  const validAnswers = answers === undefined || (
+    Array.isArray(answers) &&
+    answers.length === 7 &&
+    answers.every((item) =>
+      item &&
+      typeof item.question === "string" && item.question.trim() &&
+      typeof item.answer === "string" && item.answer.trim() &&
+      Number.isInteger(item.points) && item.points >= 0 && item.points <= 2
+    )
+  );
 
-  if (!cleanName || !Number.isFinite(score) || score < 0 || score > 14 || !cleanTier) {
-    return res.status(400).json({ error: "name, valid score and tier are required" });
+  if (!cleanName || !Number.isFinite(score) || score < 0 || score > 14 || !cleanTier || !validAnswers) {
+    return res.status(400).json({ error: "name, valid score, tier and answers are required" });
   }
 
   if (cleanEmail && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(cleanEmail)) {
@@ -138,6 +156,16 @@ app.post("/api/leads", async (req, res) => {
   }
 
   try {
+    const cleanAnswers = (answers || []).map(({ question, answer, points }) => ({
+      question: question.trim().slice(0, 500),
+      answer: answer.trim().slice(0, 500),
+      points,
+    }));
+
+    if (answers !== undefined && cleanAnswers.reduce((total, item) => total + item.points, 0) !== Math.round(score)) {
+      return res.status(400).json({ error: "score does not match answers" });
+    }
+
     const payload = {
       name: cleanName.slice(0, 200),
       email: cleanEmail ? cleanEmail.slice(0, 200) : null,
@@ -145,6 +173,7 @@ app.post("/api/leads", async (req, res) => {
       score: Math.round(score),
       tier: cleanTier.slice(0, 100),
       source: source ? String(source).slice(0, 60) : "quiz",
+      answers: cleanAnswers,
     };
 
     if (useSupabase) {
@@ -152,7 +181,7 @@ app.post("/api/leads", async (req, res) => {
       return res.status(201).json({ id: info.lastInsertRowid });
     }
 
-    const info = insertLead.run(payload);
+    const info = insertLead.run({ ...payload, answers: JSON.stringify(cleanAnswers) });
     return res.status(201).json({ id: info.lastInsertRowid });
   } catch (err) {
     console.error(err);

@@ -6,21 +6,25 @@ API + banco SQLite pra receber os leads do quiz de inglês e alimentar um dashbo
 
 ```
 quiz-backend/
-├── server.js           # API (Express)
+├── server.js           # API (Express) e entrega do site
 ├── package.json
-├── .env.example
+├── .env.example        # modelo de configuração local
 ├── leads.db            # criado automaticamente na primeira execução
+├── archive/
+│   └── quiz-standalone-original.html # versão antiga preservada
 └── public/
-    └── dashboard.html  # painel de leads (servido pelo próprio Express)
+  ├── index.html      # quiz integrado à API
+  ├── dashboard.html  # painel de leads
+  └── assets/         # imagens e arquivos estáticos
 ```
 
 ## Rodando localmente
 
 ```bash
 cd quiz-backend
-npm install
+npm ci
 cp .env.example .env
-# edite o .env e defina um DASHBOARD_API_KEY forte
+# troque o valor de DASHBOARD_API_KEY no .env
 npm start
 ```
 
@@ -43,10 +47,27 @@ Corpo esperado do `POST /api/leads`:
   "name": "Maria Silva",
   "email": "maria@email.com",
   "phone": "51999998888",
-  "score": 10,
-  "tier": "Nível Intermediário Avançado"
+  "score": 11,
+  "tier": "Nível Intermediário Avançado",
+  "answers": [
+    { "question": "Você está prestes a assistir uma série nova na Netflix. O que você faz?", "answer": "Assisto sem legenda nenhuma", "points": 2 },
+    { "question": "Qual dessas frases quer dizer estou exausto?", "answer": "I'm beat", "points": 2 },
+    { "question": "Chega um e-mail em inglês do trabalho. Sua reação:", "answer": "Leio rápido e entendo o essencial", "points": 1 },
+    { "question": "Complete: I've been working here ___ three years.", "answer": "for", "points": 2 },
+    { "question": "Você pede comida em um restaurante fora do Brasil. Como se sai?", "answer": "Peço com frases simples, meio decoradas", "points": 1 },
+    { "question": "O que significa a expressão it's a piece of cake?", "answer": "É muito fácil", "points": 2 },
+    { "question": "Alguém te chama pra uma call em inglês de última hora. Você:", "answer": "Entro, mas fico mais quieto ouvindo", "points": 1 }
+  ]
 }
 ```
+
+## Configurando o Supabase
+
+1. No SQL Editor do Supabase, execute [`supabase/add_answers_column.sql`](supabase/add_answers_column.sql) para adicionar a coluna JSONB às tabelas `public.leads` existentes.
+2. Copie `SUPABASE_URL` e `SUPABASE_SERVICE_ROLE_KEY` das configurações do projeto para `quiz-backend/.env`. Configure também `DASHBOARD_API_KEY`.
+3. Reinicie o backend. Quando as duas variáveis do Supabase estiverem definidas, novos leads e as sete respostas serão gravados na tabela `leads`; sem elas, o servidor usa SQLite local.
+
+Mantenha `SUPABASE_SERVICE_ROLE_KEY` somente no ambiente do backend. Nunca a coloque no HTML ou em código enviado ao navegador.
 
 ## Deploy (escolha uma)
 
@@ -72,9 +93,9 @@ Qualquer uma dessas plataformas tem plano gratuito e suporta Node + disco persis
 
 > Se o volume de leads crescer muito ou você quiser mais robustez, o `server.js` foi escrito de um jeito fácil de trocar `better-sqlite3` por Postgres (ex: via Supabase ou o Postgres do próprio Railway) — a lógica das rotas continua igual, só troca a camada de banco.
 
-## Conectando o quiz
+## Quiz e assets
 
-No arquivo do quiz (`quiz-nivel-ingles.html`), defina a constante `API_BASE_URL` com a URL do backend publicado (ex: `https://seu-backend.up.railway.app`). O quiz já está preparado pra mandar um `POST /api/leads` quando o formulário é enviado.
+O arquivo servido na rota `/` é `public/index.html`. Ele envia leads para `/api/leads` no mesmo servidor. Os arquivos estáticos do site ficam em `public/assets/`.
 
 ## Acessando o dashboard
 
