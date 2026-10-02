@@ -1,7 +1,6 @@
 **/node_modules/
 **/.env
 **/.env.*
-!**/.env.example
 **/leads.db*
 **/*.log
 **/.DS_Store
