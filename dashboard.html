@@ -1,0 +1,718 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dashboard — Wizard Horizontina</title>
+  <meta name="description" content="Dashboard de leads do teste de inglês da Wizard Horizontina - RS." />
+  <meta property="og:title" content="Dashboard — Wizard Horizontina" />
+  <meta property="og:description" content="Dashboard de leads do teste de inglês da Wizard Horizontina - RS." />
+  <meta property="og:type" content="website" />
+  <!-- Google Analytics - Substitua G-XXXXXXXXXX pelo seu ID de medição -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-XXXXXXXXXX');
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&family=Open+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="chart.umd.min.js"></script>
+  <style>
+    :root{
+      --wizard-red: #E30613;
+      --wizard-red-dark: #B8050F;
+      --wizard-blue: #1B2A6B;
+      --wizard-blue-dark: #0F1A4A;
+      --wizard-black: #1A1A1A;
+      --wizard-white: #FFFFFF;
+      --wizard-grey-bg: #1E1E2E;
+      --wizard-grey-light: #2A2A3E;
+      --wizard-muted: #A0A0B8;
+      --wizard-track: #3A3A52;
+      --wizard-green: #27AE60;
+      --wizard-card-bg: #252538;
+      --wizard-input-bg: #1A1A2E;
+      --wizard-text: #E8E8F0;
+      --wizard-text-muted: #A0A0B8;
+      --shadow-sm: 0 2px 8px rgba(0,0,0,.06);
+      --shadow-md: 0 4px 20px rgba(0,0,0,.08);
+      --shadow-lg: 0 8px 40px rgba(0,0,0,.12);
+      --radius-sm: 8px;
+      --radius-md: 12px;
+      --radius-xl: 24px;
+    }
+    *{ box-sizing:border-box; margin:0; padding:0; }
+    body{
+      background: #0F0F1A;
+      background-image: linear-gradient(rgba(15,15,26,.92), rgba(15,15,26,.92)), url("bg-banner.webp");
+      background-size: cover;
+      background-position: center;
+      background-attachment: fixed;
+      color: var(--wizard-text);
+      font-family:'Open Sans', sans-serif;
+      min-height:100vh;
+      line-height:1.6;
+    }
+    h1,h2,h3{ font-family:'Montserrat', sans-serif; font-weight:800; letter-spacing:-0.02em; }
+
+    /* Login */
+    .login-container{
+      min-height:100vh;
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      justify-content:center;
+      padding:24px;
+      background: var(--wizard-blue);
+      background-image: url("bg-banner.webp");
+      background-size: cover;
+      background-position: center;
+    }
+    .login-card{
+      background: var(--wizard-card-bg);
+      border-radius: var(--radius-xl);
+      box-shadow: var(--shadow-lg);
+      padding: 40px 36px;
+      width:100%;
+      max-width: 400px;
+      border: 1px solid var(--wizard-track);
+    }
+    .login-logo{
+      text-align:center;
+      margin-bottom: 32px;
+    }
+    .login-logo img{
+      height: 72px;
+      width: auto;
+      filter: drop-shadow(0 4px 16px rgba(0,0,0,.4));
+    }
+    .login-title{
+      font-size: 22px;
+      text-align: center;
+      margin-bottom: 8px;
+      color: var(--wizard-text);
+    }
+    .login-sub{
+      font-size: 14px;
+      color: var(--wizard-text-muted);
+      text-align: center;
+      margin-bottom: 28px;
+    }
+    .field{ margin-bottom: 16px; }
+    .field label{
+      display:block;
+      font-size:13px;
+      font-weight:700;
+      color:var(--wizard-text);
+      margin-bottom:8px;
+    }
+    .field input{
+      width:100%;
+      background:var(--wizard-input-bg);
+      border:2px solid var(--wizard-track);
+      border-radius:var(--radius-sm);
+      padding:14px 16px;
+      color:var(--wizard-text);
+      font-family:'Open Sans',sans-serif;
+      font-size:15px;
+      transition:border-color .2s ease;
+    }
+    .field input:focus{
+      outline:none;
+      border-color:var(--wizard-red);
+      background:var(--wizard-grey-light);
+    }
+    .btn{
+      width:100%;
+      border:none;
+      border-radius:var(--radius-md);
+      padding:16px 24px;
+      font-family:'Montserrat',sans-serif;
+      font-weight:700;
+      font-size:15px;
+      cursor:pointer;
+      transition:all .2s ease;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      gap:8px;
+    }
+    .btn-primary{
+      background:var(--wizard-red);
+      color:var(--wizard-white);
+    }
+    .btn-primary:hover{
+      background:var(--wizard-red-dark);
+    }
+    .btn:disabled{
+      opacity:.7;
+      cursor:not-allowed;
+    }
+    .spinner{
+      width:18px;
+      height:18px;
+      border:2.5px solid rgba(255,255,255,.3);
+      border-top-color:#fff;
+      border-radius:50%;
+      animation:spin .7s linear infinite;
+    }
+    @keyframes spin{ to{ transform:rotate(360deg); } }
+    .error-msg{
+      color:var(--wizard-red);
+      font-size:13px;
+      text-align:center;
+      margin-top:12px;
+    }
+
+    /* Dashboard */
+    .dashboard{
+      display:none;
+      min-height:100vh;
+    }
+    .dashboard.active{
+      display:block;
+    }
+    .topbar{
+      background: rgba(15,15,26,.95);
+      backdrop-filter: blur(12px);
+      padding: 14px 24px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      position:sticky;
+      top:0;
+      z-index:100;
+      border-bottom: 1px solid var(--wizard-track);
+    }
+    .topbar-logo img{
+      height: 40px;
+      width: auto;
+      filter: drop-shadow(0 2px 8px rgba(0,0,0,.3));
+    }
+    .topbar-user{
+      display:flex;
+      align-items:center;
+      gap:16px;
+    }
+    .topbar-user span{
+      font-size:14px;
+      color:rgba(255,255,255,.8);
+      font-weight:500;
+    }
+    .btn-logout{
+      background: rgba(255,255,255,.1);
+      border:1px solid rgba(255,255,255,.2);
+      border-radius:var(--radius-sm);
+      padding:8px 18px;
+      font-size:13px;
+      font-weight:600;
+      cursor:pointer;
+      color:var(--wizard-white);
+      transition:all .2s ease;
+    }
+    .btn-logout:hover{
+      background:var(--wizard-red);
+      color:var(--wizard-white);
+      border-color:var(--wizard-red);
+    }
+    .container{
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 40px 24px;
+    }
+    .page-title{
+      font-size: 32px;
+      font-weight: 800;
+      margin-bottom: 6px;
+      color: var(--wizard-text);
+    }
+    .page-sub{
+      color: var(--wizard-text-muted);
+      font-size: 15px;
+      margin-bottom: 36px;
+    }
+
+    /* Stats */
+    .stats-grid{
+      display:grid;
+      grid-template-columns:repeat(auto-fit, minmax(220px, 1fr));
+      gap: 20px;
+      margin-bottom: 36px;
+    }
+    .stat-card{
+      background: var(--wizard-card-bg);
+      backdrop-filter: blur(8px);
+      border-radius: var(--radius-lg);
+      padding: 28px;
+      box-shadow: 0 8px 32px rgba(0,0,0,.3);
+      border: 1px solid var(--wizard-track);
+      transition: transform .2s ease, box-shadow .2s ease;
+    }
+    .stat-card:hover{
+      transform: translateY(-2px);
+      box-shadow: 0 12px 40px rgba(0,0,0,.2);
+    }
+    .stat-card .stat-icon{
+      width: 48px;
+      height: 48px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+      margin-bottom: 16px;
+    }
+    .stat-card .stat-icon.red{ background: #FFF0F0; }
+    .stat-card .stat-icon.blue{ background: #E3F2FD; }
+    .stat-card .stat-icon.green{ background: #E8F5E9; }
+    .stat-card .stat-icon.orange{ background: #FFF8E1; }
+    .stat-card .stat-value{
+      font-size: 36px;
+      font-weight: 800;
+      font-family: 'Montserrat', sans-serif;
+      color: var(--wizard-text);
+      line-height: 1;
+      margin-bottom: 6px;
+    }
+    .stat-card .stat-label{
+      font-size: 13px;
+      color: var(--wizard-text-muted);
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: .06em;
+    }
+
+    /* Charts */
+    .charts-grid{
+      display:grid;
+      grid-template-columns:repeat(auto-fit, minmax(320px, 1fr));
+      gap: 20px;
+      margin-bottom: 36px;
+    }
+    .chart-card{
+      background: var(--wizard-card-bg);
+      backdrop-filter: blur(8px);
+      border-radius: var(--radius-lg);
+      padding: 28px;
+      box-shadow: 0 8px 32px rgba(0,0,0,.3);
+      border: 1px solid var(--wizard-track);
+    }
+    .chart-card h3{
+      font-size: 16px;
+      font-weight: 700;
+      margin-bottom: 20px;
+      color: var(--wizard-text);
+    }
+
+    /* Table */
+    .table-card{
+      background: var(--wizard-card-bg);
+      backdrop-filter: blur(8px);
+      border-radius: var(--radius-lg);
+      box-shadow: 0 8px 32px rgba(0,0,0,.3);
+      border: 1px solid var(--wizard-track);
+      overflow: hidden;
+    }
+    .table-header{
+      padding: 24px 28px;
+      border-bottom: 1px solid var(--wizard-track);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .table-header h3{
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--wizard-text);
+    }
+    .btn-refresh{
+      background: var(--wizard-red);
+      border: none;
+      border-radius: var(--radius-sm);
+      padding: 10px 20px;
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+      color: var(--wizard-white);
+      transition: all .2s ease;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .btn-refresh:hover{
+      background: var(--wizard-red-dark);
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(227,6,19,.3);
+    }
+    table{
+      width: 100%;
+      border-collapse: collapse;
+    }
+    th,td{
+      text-align: left;
+      padding: 16px 24px;
+      font-size: 14px;
+      border-bottom: 1px solid var(--wizard-track);
+      color: var(--wizard-text);
+    }
+    th{
+      background: var(--wizard-grey-light);
+      color: var(--wizard-text-muted);
+      font-weight: 700;
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: .06em;
+    }
+    tr:last-child td{
+      border-bottom: none;
+    }
+    tr:hover{
+      background: rgba(255,255,255,.03);
+    }
+    .tier-badge{
+      display: inline-block;
+      padding: 6px 14px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 700;
+    }
+    .tier-iniciante{
+      background: #FFF0F0;
+      color: var(--wizard-red);
+    }
+    .tier-basico{
+      background: #FFF8E1;
+      color: #F5A623;
+    }
+    .tier-intermediario{
+      background: #E3F2FD;
+      color: var(--wizard-blue);
+    }
+    .tier-avancado{
+      background: #E8F5E9;
+      color: var(--wizard-green);
+    }
+    .empty-state{
+      text-align: center;
+      padding: 60px 20px;
+      color: var(--wizard-text-muted);
+    }
+    .empty-state-icon{
+      font-size:48px;
+      margin-bottom:16px;
+    }
+
+    @media (max-width: 768px){
+      .charts-grid{
+        grid-template-columns:1fr;
+      }
+      .stats-grid{
+        grid-template-columns:repeat(2, 1fr);
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- LOGIN -->
+  <div class="login-container" id="login-screen">
+    <div class="login-logo">
+      <img src="logo-white.png" alt="Wizard by Pearson" />
+    </div>
+    <div class="login-card">
+      <h1 class="login-title">Dashboard de Leads</h1>
+      <p class="login-sub">Acesse com suas credenciais</p>
+      <form id="login-form">
+        <div class="field">
+          <label for="login-email">E-mail</label>
+          <input id="login-email" type="email" required placeholder="seu@email.com" />
+        </div>
+        <div class="field">
+          <label for="login-password">Senha</label>
+          <input id="login-password" type="password" required placeholder="••••••••" />
+        </div>
+        <button class="btn btn-primary" type="submit" id="login-btn">
+          Entrar
+        </button>
+        <p class="error-msg" id="login-error"></p>
+      </form>
+    </div>
+  </div>
+
+  <!-- DASHBOARD -->
+  <div class="dashboard" id="dashboard-screen">
+    <div class="topbar">
+      <div class="topbar-logo" style="display:flex; align-items:center; gap:12px;">
+        <img src="logo-white.png" alt="Wizard by Pearson" />
+        <span style="font-family:'Montserrat',sans-serif; font-size:14px; color:rgba(255,255,255,.85); font-weight:700; letter-spacing:.03em;">Horizontina - RS</span>
+      </div>
+      <div class="topbar-user">
+        <span id="user-email"></span>
+        <button class="btn-logout" id="logout-btn">Sair</button>
+      </div>
+    </div>
+
+    <div class="container">
+      <h1 class="page-title">Dashboard de Leads</h1>
+      <p class="page-sub">Acompanhe os leads capturados pelo quiz</p>
+
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-icon red">👥</div>
+          <div class="stat-value" id="stat-total">0</div>
+          <div class="stat-label">Total de Leads</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon blue">📅</div>
+          <div class="stat-value" id="stat-today">0</div>
+          <div class="stat-label">Leads Hoje</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon green">⭐</div>
+          <div class="stat-value" id="stat-avg">0</div>
+          <div class="stat-label">Pontuação Média</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon orange">📈</div>
+          <div class="stat-value" id="stat-week">0</div>
+          <div class="stat-label">Últimos 7 dias</div>
+        </div>
+      </div>
+
+      <div class="charts-grid">
+        <div class="chart-card">
+          <h3>Leads por Nível</h3>
+          <canvas id="chart-tier"></canvas>
+        </div>
+        <div class="chart-card">
+          <h3>Leads ao Longo do Tempo</h3>
+          <canvas id="chart-time"></canvas>
+        </div>
+      </div>
+
+      <div class="table-card">
+        <div class="table-header">
+          <h3>Leads Recentes</h3>
+          <button class="btn-refresh" id="refresh-btn">Atualizar</button>
+        </div>
+        <table>
+          <thead>
+            <tr>
+              <th>Nome</th>
+              <th>E-mail</th>
+              <th>Telefone</th>
+              <th>Nível</th>
+              <th>Pontuação</th>
+              <th>Data</th>
+            </tr>
+          </thead>
+          <tbody id="leads-body">
+            <tr>
+              <td colspan="6">
+                <div class="empty-state">
+                  <div class="empty-state-icon">📊</div>
+                  <p>Carregando dados...</p>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+<script>
+const SUPABASE_URL = "https://atbdbssnabaobxonzvhr.supabase.co";
+const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImF0YmRic3NuYWJhb2J4b256dmhyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTAwMjg3NzAsImV4cCI6MjEwNTYwNDc3MH0.kcjq-2APRVnjCiDO9GGe5P630xpWB5dnfOdqXCAnaUA";
+
+const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+let tierChart = null;
+let timeChart = null;
+
+// Check auth on load
+supabaseClient.auth.getSession().then(({ data: { session } }) => {
+  if (session) {
+    showDashboard(session.user);
+  }
+});
+
+// Login
+document.getElementById("login-form").addEventListener("submit", async (e) => {
+  e.preventDefault();
+  const btn = document.getElementById("login-btn");
+  const errorEl = document.getElementById("login-error");
+  const email = document.getElementById("login-email").value.trim();
+  const password = document.getElementById("login-password").value;
+
+  btn.disabled = true;
+  btn.innerHTML = '<span class="spinner"></span> Entrando...';
+  errorEl.textContent = "";
+
+  try {
+    const { data, error } = await supabaseClient.auth.signInWithPassword({ email, password });
+    if (error) throw error;
+    showDashboard(data.user);
+  } catch (err) {
+    errorEl.textContent = "E-mail ou senha incorretos.";
+    btn.disabled = false;
+    btn.innerHTML = "Entrar";
+  }
+});
+
+// Logout
+document.getElementById("logout-btn").addEventListener("click", async () => {
+  await supabaseClient.auth.signOut();
+  document.getElementById("dashboard-screen").classList.remove("active");
+  document.getElementById("login-screen").style.display = "flex";
+  document.getElementById("login-form").reset();
+  document.getElementById("login-btn").disabled = false;
+  document.getElementById("login-btn").innerHTML = "Entrar";
+});
+
+function showDashboard(user) {
+  document.getElementById("login-screen").style.display = "none";
+  document.getElementById("dashboard-screen").classList.add("active");
+  document.getElementById("user-email").textContent = user.email;
+  loadData();
+}
+
+async function loadData() {
+  try {
+    const { data: leads, error } = await supabaseClient
+      .from("leads")
+      .select("*")
+      .order("created_at", { ascending: false });
+
+    if (error) throw error;
+
+    renderStats(leads);
+    renderCharts(leads);
+    renderTable(leads);
+  } catch (err) {
+    console.error("Erro ao carregar dados:", err);
+  }
+}
+
+function renderStats(leads) {
+  const total = leads.length;
+  const today = new Date().toISOString().slice(0, 10);
+  const todayCount = leads.filter(l => l.created_at.slice(0, 10) === today).length;
+  const avgScore = total ? (leads.reduce((sum, l) => sum + l.score, 0) / total).toFixed(1) : 0;
+
+  const weekAgo = new Date();
+  weekAgo.setDate(weekAgo.getDate() - 7);
+  const weekCount = leads.filter(l => new Date(l.created_at) >= weekAgo).length;
+
+  document.getElementById("stat-total").textContent = total;
+  document.getElementById("stat-today").textContent = todayCount;
+  document.getElementById("stat-avg").textContent = avgScore;
+  document.getElementById("stat-week").textContent = weekCount;
+}
+
+function renderCharts(leads) {
+  // Tier chart
+  const tierCounts = {};
+  leads.forEach(l => {
+    tierCounts[l.tier] = (tierCounts[l.tier] || 0) + 1;
+  });
+
+  const tierCtx = document.getElementById("chart-tier");
+  if (tierChart) tierChart.destroy();
+  tierChart = new Chart(tierCtx, {
+    type: "doughnut",
+    data: {
+      labels: Object.keys(tierCounts),
+      datasets: [{
+        data: Object.values(tierCounts),
+        backgroundColor: ["#E30613", "#F5A623", "#2D9CDB", "#27AE60"]
+      }]
+    },
+    options: {
+      plugins: { legend: { position: "bottom" } }
+    }
+  });
+
+  // Time chart
+  const dayCounts = {};
+  leads.forEach(l => {
+    const day = l.created_at.slice(0, 10);
+    dayCounts[day] = (dayCounts[day] || 0) + 1;
+  });
+
+  const sortedDays = Object.keys(dayCounts).sort();
+  const timeCtx = document.getElementById("chart-time");
+  if (timeChart) timeChart.destroy();
+  timeChart = new Chart(timeCtx, {
+    type: "line",
+    data: {
+      labels: sortedDays,
+      datasets: [{
+        label: "Leads",
+        data: sortedDays.map(d => dayCounts[d]),
+        borderColor: "#E30613",
+        backgroundColor: "rgba(227,6,19,.1)",
+        fill: true,
+        tension: .3
+      }]
+    },
+    options: {
+      plugins: { legend: { display: false } },
+      scales: { y: { beginAtZero: true, ticks: { precision: 0 } } }
+    }
+  });
+}
+
+function renderTable(leads) {
+  const tbody = document.getElementById("leads-body");
+
+  if (leads.length === 0) {
+    tbody.innerHTML = `
+      <tr>
+        <td colspan="6">
+          <div class="empty-state">
+            <div class="empty-state-icon">📭</div>
+            <p>Nenhum lead capturado ainda</p>
+          </div>
+        </td>
+      </tr>
+    `;
+    return;
+  }
+
+  tbody.innerHTML = leads.map(l => {
+    const tierClass = l.tier.toLowerCase().includes("iniciante") ? "tier-iniciante"
+      : l.tier.toLowerCase().includes("básico") || l.tier.toLowerCase().includes("basico") ? "tier-basico"
+      : l.tier.toLowerCase().includes("intermediário") || l.tier.toLowerCase().includes("intermediario") ? "tier-intermediario"
+      : "tier-avancado";
+
+    const date = new Date(l.created_at).toLocaleString("pt-BR");
+
+    return `
+      <tr>
+        <td><strong>${escapeHtml(l.name)}</strong></td>
+        <td>${escapeHtml(l.email || "-")}</td>
+        <td>${escapeHtml(l.phone || "-")}</td>
+        <td><span class="tier-badge ${tierClass}">${escapeHtml(l.tier)}</span></td>
+        <td>${l.score}/14</td>
+        <td>${date}</td>
+      </tr>
+    `;
+  }).join("");
+}
+
+function escapeHtml(str) {
+  const div = document.createElement("div");
+  div.textContent = str;
+  return div.innerHTML;
+}
+
+document.getElementById("refresh-btn").addEventListener("click", loadData);
+</script>
+
+</body>
+</html>

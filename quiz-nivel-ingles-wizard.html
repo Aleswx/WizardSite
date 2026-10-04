@@ -1,0 +1,638 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>Teste de Inglês — Wizard Horizontina</title>
+  <meta name="description" content="Descubra seu nível de inglês em poucos minutos. Teste gratuito da Wizard Horizontina - RS." />
+  <meta property="og:title" content="Teste de Inglês — Wizard Horizontina" />
+  <meta property="og:description" content="Descubra seu nível de inglês em poucos minutos. Teste gratuito da Wizard Horizontina - RS." />
+  <meta property="og:type" content="website" />
+  <meta property="og:image" content="logo-white.png" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Teste de Inglês — Wizard Horizontina" />
+  <meta name="twitter:description" content="Descubra seu nível de inglês em poucos minutos. Teste gratuito da Wizard Horizontina - RS." />
+  <!-- Google Analytics - Substitua G-XXXXXXXXXX pelo seu ID de medição -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-XXXXXXXXXX');
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&family=Open+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --wizard-red: #E30613;
+      --wizard-red-dark: #B8050F;
+      --wizard-blue: #1B2A6B;
+      --wizard-blue-dark: #0F1A4A;
+      --wizard-black: #1A1A1A;
+      --wizard-white: #FFFFFF;
+      --wizard-grey-bg: #F5F5F5;
+      --wizard-grey-light: #FAFAFA;
+      --wizard-muted: #666666;
+      --wizard-track: #E0E0E0;
+      --wizard-green: #27AE60;
+      --shadow-sm: 0 2px 8px rgba(0,0,0,.06);
+      --shadow-md: 0 4px 20px rgba(0,0,0,.15);
+      --shadow-lg: 0 8px 40px rgba(0,0,0,.25);
+      --radius-sm: 8px;
+      --radius-md: 12px;
+      --radius-xl: 24px;
+    }
+    *{ box-sizing:border-box; margin:0; padding:0; }
+    html,body{ height:100%; }
+    body{
+      background: var(--wizard-blue);
+      background-image: url("bg-banner.webp");
+      background-size: cover;
+      background-position: center;
+      background-attachment: fixed;
+      color: var(--wizard-black);
+      font-family:'Open Sans', sans-serif;
+      min-height:100vh;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding: 24px 16px;
+      line-height:1.6;
+    }
+    h1,h2,h3,h4{ font-family:'Montserrat', sans-serif; font-weight:800; letter-spacing:-0.02em; }
+
+    .wrap{ width:100%; max-width: 480px; }
+
+    /* Topbar */
+    .topbar{
+      display:flex; align-items:center; justify-content:space-between;
+      padding: 0 4px 16px;
+    }
+
+    .badge{
+      font-size:12px; font-weight:700; color: var(--wizard-white);
+      background: rgba(255,255,255,.15); padding:6px 14px; border-radius:999px;
+      border:1px solid rgba(255,255,255,.2);
+      backdrop-filter: blur(4px);
+    }
+
+    /* Card */
+    .card{
+      background: var(--wizard-white);
+      border-radius: var(--radius-xl);
+      box-shadow: var(--shadow-lg);
+      overflow:hidden;
+    }
+    .accent-bar{ height:8px; background: linear-gradient(90deg, var(--wizard-red), var(--wizard-red-dark)); }
+    .card-inner{ padding: 40px 34px 36px; }
+
+    /* Screens */
+    .screen{ display:none; }
+    .screen.active{ display:block; animation: fadeSlide .4s ease both; }
+    @keyframes fadeSlide{ from{opacity:0; transform:translateY(12px);} to{opacity:1; transform:none;} }
+
+    /* Hero */
+    .eyebrow{
+      color: var(--wizard-red); font-size:13px; font-weight:700;
+      text-transform:uppercase; letter-spacing:.08em; margin-bottom:12px;
+    }
+    h1.hero-title{ font-size:30px; line-height:1.15; margin-bottom:14px; }
+    .hero-title .hl{ color: var(--wizard-red); }
+    .hero-sub{ color: var(--wizard-muted); font-size:15px; margin-bottom:28px; max-width:40ch; }
+    .checklist{ list-style:none; padding:0; margin:0 0 30px; display:flex; flex-direction:column; gap:12px; }
+    .checklist li{ display:flex; gap:10px; font-size:14.5px; color: var(--wizard-black); align-items:flex-start; }
+    .checklist li::before{
+      content:"✓"; color: var(--wizard-white); background: var(--wizard-green);
+      width:22px; height:22px; border-radius:50%; display:flex; align-items:center;
+      justify-content:center; font-size:12px; font-weight:700; flex-shrink:0; margin-top:1px;
+    }
+
+    /* Buttons */
+    .btn{
+      width:100%; border:none; border-radius: var(--radius-md);
+      padding:16px 24px; font-family:'Montserrat',sans-serif; font-weight:700;
+      font-size:15px; cursor:pointer; margin-bottom:12px;
+      transition: all .2s ease; display:flex; align-items:center; justify-content:center; gap:8px;
+    }
+    .btn:hover{ transform:translateY(-1px); box-shadow:var(--shadow-md); }
+    .btn:active{ transform:scale(.98); }
+    .btn:disabled{ opacity:.7; cursor:not-allowed; transform:none; }
+    .btn .spinner{
+      width:18px; height:18px; border:2.5px solid rgba(255,255,255,.3);
+      border-top-color:#fff; border-radius:50%; animation:spin .7s linear infinite;
+    }
+    @keyframes spin{ to{ transform:rotate(360deg); } }
+    .btn-primary{ background: var(--wizard-red); color: var(--wizard-white); }
+    .btn-primary:hover{ background: var(--wizard-red-dark); }
+    .btn-secondary{ background: var(--wizard-grey-bg); color: var(--wizard-black); border:1.5px solid var(--wizard-track); }
+    .btn-whatsapp{ background: #25D366; color: var(--wizard-white); }
+    .btn-whatsapp:hover{ background: #1DA851; }
+
+    /* Progress */
+    .progress-track{ height:8px; background: var(--wizard-track); border-radius:999px; margin-bottom:28px; overflow:hidden; }
+    .progress-fill{ height:100%; background: linear-gradient(90deg, var(--wizard-red), var(--wizard-red-dark)); width:0%; transition: width .4s ease; border-radius:999px; }
+
+    .q-num{ color:var(--wizard-muted); font-size:13px; margin:0 0 10px; font-weight:600; text-transform:uppercase; letter-spacing:.05em; }
+    .q-text{ font-size:21px; line-height:1.35; margin:0 0 26px; font-weight:700; }
+
+    .options{ display:flex; flex-direction:column; gap:12px; }
+    .option{
+      text-align:left; background: var(--wizard-grey-light); border:2px solid var(--wizard-track);
+      color: var(--wizard-black); border-radius: var(--radius-md); padding:16px 18px;
+      font-family:'Open Sans', sans-serif; font-size:15px; cursor:pointer;
+      transition: all .2s ease; line-height:1.4;
+    }
+    .option:hover{ border-color: var(--wizard-red); background:#FFF5F5; }
+    .option:active{ transform:scale(.99); }
+    .option.picked{ border-color: var(--wizard-red); background:#FFF0F0; font-weight:600; }
+
+    /* Form */
+    .form-title{ font-size:20px; margin:0 0 6px; }
+    .form-sub{ font-size:14px; color:var(--wizard-muted); margin:0 0 24px; }
+
+    .field{ margin-bottom: 16px; }
+    .field label{ display:block; font-size:13px; font-weight:700; color: var(--wizard-black); margin-bottom:8px; }
+    .field input{
+      width:100%; background: var(--wizard-grey-light); border:2px solid var(--wizard-track);
+      border-radius: var(--radius-sm); padding:14px 16px; color:var(--wizard-black);
+      font-family:'Open Sans', sans-serif; font-size:15px; transition: border-color .2s ease;
+    }
+    .field input:focus{ outline:none; border-color: var(--wizard-red); background:var(--wizard-white); }
+
+    .consent{ display:flex; gap:10px; align-items:flex-start; margin: 20px 0 24px; }
+    .consent input{ margin-top:3px; accent-color: var(--wizard-red); flex-shrink:0; width:18px; height:18px; }
+    .consent label{ font-size:13px; color: var(--wizard-muted); line-height:1.5; }
+    .consent label a{ color: var(--wizard-red); text-decoration:none; }
+    .consent label a:hover{ text-decoration:underline; }
+
+    /* Result */
+    .result-label{ color:var(--wizard-red); font-size:13px; font-weight:700; text-transform:uppercase; letter-spacing:.08em; margin:0 0 8px; }
+    .result-title{ font-size:26px; margin:0 0 14px; }
+    .result-blurb{ font-size:15px; color:var(--wizard-black); margin:0 0 16px; line-height:1.6; }
+    .score-chip{
+      display:inline-block; background: var(--wizard-grey-bg); color:var(--wizard-muted);
+      font-size:14px; font-weight:700; padding:8px 16px; border-radius:999px; margin-bottom:28px;
+      border:1px solid var(--wizard-track);
+    }
+
+    /* Success */
+    .success-icon{ font-size:56px; margin-bottom:16px; }
+    .success-title{ font-size:26px; margin-bottom:10px; }
+    .success-sub{ font-size:15px; color:var(--wizard-muted); margin-bottom:28px; }
+
+    /* Wizard branding footer */
+    .wizard-footer{
+      text-align:center; padding:20px 0 0; color:rgba(255,255,255,.6); font-size:12px;
+    }
+    .wizard-footer .pearson{ font-weight:700; color:var(--wizard-white); }
+
+    @media (prefers-reduced-motion: reduce){
+      .screen.active{ animation:none; }
+      .btn, .option{ transition:none; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="wrap">
+  <div class="topbar">
+    <div style="display:flex; align-items:center; gap:12px;">
+      <img src="logo-white.png" alt="Wizard by Pearson" style="height:48px; width:auto;" />
+      <span style="font-family:'Montserrat',sans-serif; font-size:14px; color:rgba(255,255,255,.9); font-weight:700; letter-spacing:.03em; text-shadow: 0 2px 8px rgba(0,0,0,.3);">Horizontina - RS</span>
+    </div>
+    <div class="badge">Teste Gratuito</div>
+  </div>
+
+  <div class="card">
+    <div class="accent-bar"></div>
+    <div class="card-inner">
+
+      <!-- HERO -->
+      <section class="screen active" id="screen-hero">
+        <p class="eyebrow">Teste de Nível</p>
+        <h1 class="hero-title">Qual é o seu <span class="hl">nível real</span> de inglês?</h1>
+        <p class="hero-sub">Descubra em poucos minutos onde você está e qual é o próximo passo ideal pra evoluir.</p>
+        <ul class="checklist">
+          <li>Faça de onde estiver, no seu tempo</li>
+          <li>Resultado rápido, com avaliação clara do seu nível</li>
+          <li>100% gratuito e sem compromisso</li>
+        </ul>
+        <button class="btn btn-primary" id="start-btn">Fazer o teste</button>
+      </section>
+
+      <!-- QUIZ -->
+      <section class="screen" id="screen-quiz">
+        <div class="progress-track"><div class="progress-fill" id="progress-fill"></div></div>
+        <p class="q-num" id="q-num">Pergunta 1 de 7</p>
+        <h2 class="q-text" id="q-text"></h2>
+        <div class="options" id="q-options"></div>
+      </section>
+
+      <!-- FORM (resultado bloqueado até preencher) -->
+      <section class="screen" id="screen-form">
+        <h3 class="form-title">Quer saber seu resultado?</h3>
+        <p class="form-sub">Preencha seus dados para descobrir seu nível de inglês e receber nosso contato.</p>
+
+        <form id="lead-form">
+          <div class="field">
+            <label for="f-name">Nome</label>
+            <input id="f-name" type="text" required placeholder="Seu nome completo" />
+          </div>
+          <div class="field">
+            <label for="f-email">E-mail</label>
+            <input id="f-email" type="email" required placeholder="voce@email.com" />
+          </div>
+          <div class="field">
+            <label for="f-phone">Telefone (com DDD)</label>
+            <input id="f-phone" type="tel" required placeholder="(00) 00000-0000" />
+          </div>
+
+          <div class="consent">
+            <input type="checkbox" id="f-consent" required />
+            <label for="f-consent">Aceito receber comunicação e ofertas da Wizard e outras marcas Pearson. Ver <a href="politica-privacidade.html" target="_blank">política de privacidade</a>.</label>
+          </div>
+
+          <button class="btn btn-primary" type="submit">Ver meu resultado</button>
+        </form>
+      </section>
+
+      <!-- RESULT (só aparece após preencher) -->
+      <section class="screen" id="screen-result">
+        <p class="result-label">Seu Resultado</p>
+        <h2 class="result-title" id="result-title"></h2>
+        <p class="result-blurb" id="result-blurb"></p>
+        <span class="score-chip" id="result-score"></span>
+
+        <div class="divider"></div>
+
+        <h3 class="form-title">Quer saber mais sobre nossos cursos?</h3>
+        <p class="form-sub">Fale agora com nossa equipe pelo WhatsApp.</p>
+
+        <button class="btn btn-whatsapp" id="whatsapp-btn">Falar agora pelo WhatsApp</button>
+        <button class="btn btn-secondary" id="restart-btn">Refazer o teste</button>
+      </section>
+
+      <!-- SUCCESS -->
+      <section class="screen" id="screen-success">
+        <div class="success-icon">🎉</div>
+        <h2 class="success-title">Sucesso!</h2>
+        <p class="success-sub">Em breve, nossa equipe entrará em contato com você.</p>
+        <button class="btn btn-secondary" id="restart-btn-2">Voltar ao início</button>
+      </section>
+
+    </div>
+  </div>
+
+  <div class="wizard-footer">
+    <span class="pearson">Wizard by Pearson</span> — Maior rede de ensino de idiomas do mundo
+  </div>
+</div>
+
+<script>
+(function(){
+  const WHATSAPP_NUMBER = "55996570961";
+  const SUPABASE_URL = "https://atbdbssnabaobxonzvhr.supabase.co";
+  const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImF0YmRic3NuYWJhb2J4b256dmhyIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc5MDAyODc3MCwiZXhwIjoyMTA1NjA0NzcwfQ.gBQiCRu7NNwht3UVawg3AD3-Qw16bT4iK3adGOxO6yE";
+
+  const questions = [
+    { q: "_________ you speak Spanish or Portuguese?",
+      options: [
+        { label: "Do", pts: 2 },
+        { label: "Is", pts: 0 },
+        { label: "Does", pts: 0 },
+      ]},
+    { q: "I like ________________ English very much.",
+      options: [
+        { label: "study", pts: 0 },
+        { label: "to study", pts: 2 },
+        { label: "studies", pts: 0 },
+      ]},
+    { q: "We have to go __________________ bank now.",
+      options: [
+        { label: "to the", pts: 2 },
+        { label: "to", pts: 0 },
+        { label: "___", pts: 0 },
+      ]},
+    { q: "She ____________ how to speak English very well.",
+      options: [
+        { label: "know", pts: 0 },
+        { label: "knew", pts: 0 },
+        { label: "knows", pts: 2 },
+      ]},
+    { q: "He ___________ ten thousand dollars ________ the car.",
+      options: [
+        { label: "paid / for", pts: 2 },
+        { label: "pays / for", pts: 0 },
+        { label: "paid / in the", pts: 0 },
+      ]},
+    { q: "What _______ you __________ to do tonight?",
+      options: [
+        { label: "are / going", pts: 2 },
+        { label: "are / go", pts: 0 },
+        { label: "is / goin", pts: 0 },
+      ]},
+    { q: "I think she _______ at the office this morning.",
+      options: [
+        { label: "were", pts: 0 },
+        { label: "did", pts: 0 },
+        { label: "was", pts: 2 },
+      ]},
+    { q: "__________ they late for work again?",
+      options: [
+        { label: "Were", pts: 2 },
+        { label: "Was", pts: 0 },
+        { label: "Is", pts: 0 },
+      ]},
+    { q: "His birthday is _________ May 3rd.",
+      options: [
+        { label: "in", pts: 0 },
+        { label: "on", pts: 2 },
+        { label: "at", pts: 0 },
+      ]},
+    { q: "____________ there anything else I could help you with?",
+      options: [
+        { label: "Are", pts: 0 },
+        { label: "Aren't", pts: 0 },
+        { label: "Is", pts: 2 },
+      ]},
+    { q: "_______________ car is this?",
+      options: [
+        { label: "Whose", pts: 2 },
+        { label: "Where", pts: 0 },
+        { label: "Were", pts: 0 },
+      ]},
+    { q: "That's _________________________________.",
+      options: [
+        { label: "the house of John", pts: 0 },
+        { label: "John's house", pts: 2 },
+        { label: "John' house", pts: 0 },
+      ]},
+    { q: "They _______________ do it by themselves anymore.",
+      options: [
+        { label: "couldn't", pts: 0 },
+        { label: "could", pts: 0 },
+        { label: "can", pts: 2 },
+      ]},
+    { q: "You ___________ discuss this matter with her as soon as possible.",
+      options: [
+        { label: "need", pts: 0 },
+        { label: "should", pts: 2 },
+        { label: "would", pts: 0 },
+      ]},
+    { q: "I ___________ be able to take care of it today.",
+      options: [
+        { label: "is", pts: 0 },
+        { label: "won't", pts: 0 },
+        { label: "can", pts: 2 },
+      ]},
+    { q: "They met each other in Paris, _______________?",
+      options: [
+        { label: "didn't they", pts: 2 },
+        { label: "did they", pts: 0 },
+        { label: "don't they", pts: 0 },
+      ]},
+    { q: "He ________________ play football while he was in college.",
+      options: [
+        { label: "used", pts: 0 },
+        { label: "used to", pts: 2 },
+        { label: "didn't used", pts: 0 },
+      ]},
+    { q: "_________ it James _________ gave you the ring?",
+      options: [
+        { label: "Were / who", pts: 0 },
+        { label: "Was / who", pts: 2 },
+        { label: "Was / whose", pts: 0 },
+      ]},
+    { q: "Are they ______________ living alone?",
+      options: [
+        { label: "use to", pts: 0 },
+        { label: "used", pts: 0 },
+        { label: "used to", pts: 2 },
+      ]},
+    { q: "This is the store _______________ I told you about.",
+      options: [
+        { label: "who", pts: 0 },
+        { label: "that", pts: 2 },
+        { label: "this", pts: 0 },
+      ]},
+    { q: "Why ___________ she canceled the meeting?",
+      options: [
+        { label: "has", pts: 0 },
+        { label: "have", pts: 0 },
+        { label: "does", pts: 2 },
+      ]},
+    { q: "________ you _______ worked for a multinational company?",
+      options: [
+        { label: "Have / yet", pts: 0 },
+        { label: "Have / ever", pts: 2 },
+        { label: "Has / ever", pts: 0 },
+      ]},
+    { q: "I haven't seen my high school friends __________ graduation.",
+      options: [
+        { label: "for", pts: 0 },
+        { label: "since", pts: 2 },
+        { label: "yet", pts: 0 },
+      ]},
+    { q: "I ___________ have _________ it for you.",
+      options: [
+        { label: "would / did", pts: 0 },
+        { label: "will / done", pts: 2 },
+        { label: "would / done", pts: 0 },
+      ]},
+    { q: "You ______________________ asked his permission first.",
+      options: [
+        { label: "should had", pts: 0 },
+        { label: "should have", pts: 2 },
+        { label: "would has", pts: 0 },
+      ]},
+    { q: "She ___________ been ___________ in Europe for five years.",
+      options: [
+        { label: "has / living", pts: 0 },
+        { label: "has / lived", pts: 2 },
+        { label: "have / living", pts: 0 },
+      ]},
+    { q: "Would you ___________ come if I ____________ invited you?",
+      options: [
+        { label: "have / have", pts: 0 },
+        { label: "had / have", pts: 0 },
+        { label: "have / had", pts: 2 },
+      ]},
+    { q: "They stopped __________________ care of this business.",
+      options: [
+        { label: "to take", pts: 2 },
+        { label: "taking", pts: 0 },
+        { label: "take", pts: 0 },
+      ]},
+    { q: "We _____________ discussed this issue with them ______________",
+      options: [
+        { label: "haven't / yet", pts: 2 },
+        { label: "haven't / already", pts: 0 },
+        { label: "hasn't / yet", pts: 0 },
+      ]},
+    { q: "_________ I am exhausted today I won't miss this party.",
+      options: [
+        { label: "Hence", pts: 0 },
+        { label: "Therefore", pts: 0 },
+        { label: "Even though", pts: 2 },
+      ]},
+    { q: "He was the _____________ who invited me out for dinner.",
+      options: [
+        { label: "ones", pts: 0 },
+        { label: "one", pts: 2 },
+        { label: "one's", pts: 0 },
+      ]},
+    { q: "My kids' ________________ just fills me with great joy.",
+      options: [
+        { label: "laughing", pts: 2 },
+        { label: "laughed", pts: 0 },
+        { label: "smiled", pts: 0 },
+      ]},
+  ];
+
+  const tiers = [
+    { min:0, max:16, title:"Nível Iniciante", blurb:"Você ainda apoia bastante no português no dia a dia — e tudo bem, é exatamente daqui que todo mundo começa." },
+    { min:17, max:32, title:"Nível Básico a Intermediário", blurb:"Você já entende o essencial e está treinando o ouvido. Falta destravar a confiança pra parar de traduzir na cabeça." },
+    { min:33, max:48, title:"Nível Intermediário Avançado", blurb:"Você se vira bem em situações reais e já pensa em inglês boa parte do tempo." },
+    { min:49, max:64, title:"Nível Avançado", blurb:"Você lida com inglês quase como um nativo. A essa altura, é sobre refinar nuance e vocabulário." },
+  ];
+
+  let current = 0, score = 0;
+
+  const screens = {
+    hero: document.getElementById("screen-hero"),
+    quiz: document.getElementById("screen-quiz"),
+    form: document.getElementById("screen-form"),
+    result: document.getElementById("screen-result"),
+    success: document.getElementById("screen-success"),
+  };
+  function showScreen(name){
+    Object.values(screens).forEach(s => s.classList.remove("active"));
+    screens[name].classList.add("active");
+  }
+
+  function renderQuestion(){
+    const item = questions[current];
+    document.getElementById("q-num").textContent = "Pergunta " + (current + 1) + " de " + questions.length;
+    document.getElementById("q-text").textContent = item.q;
+    document.getElementById("progress-fill").style.width = ((current / questions.length) * 100) + "%";
+
+    const optsEl = document.getElementById("q-options");
+    optsEl.innerHTML = "";
+    item.options.forEach(opt => {
+      const btn = document.createElement("button");
+      btn.className = "option";
+      btn.type = "button";
+      btn.textContent = opt.label;
+      btn.addEventListener("click", () => selectOption(btn, opt.pts));
+      optsEl.appendChild(btn);
+    });
+  }
+
+  function selectOption(btn, pts){
+    Array.from(document.getElementById("q-options").children).forEach(b => {
+      b.classList.remove("picked"); b.disabled = true;
+    });
+    btn.classList.add("picked");
+    score += pts;
+    setTimeout(() => {
+      current++;
+      if (current < questions.length){
+        renderQuestion();
+      } else {
+        document.getElementById("progress-fill").style.width = "100%";
+        setTimeout(() => showScreen("form"), 250);
+      }
+    }, 380);
+  }
+
+  function getTier(s){ return tiers.find(t => s >= t.min && s <= t.max) || tiers[0]; }
+
+  function showResult(){
+    const tier = getTier(score);
+    document.getElementById("result-title").textContent = tier.title;
+    document.getElementById("result-blurb").textContent = tier.blurb;
+    document.getElementById("result-score").textContent = score + " / 64 pontos";
+    showScreen("result");
+  }
+
+  document.getElementById("start-btn").addEventListener("click", () => {
+    current = 0; score = 0;
+    renderQuestion();
+    showScreen("quiz");
+  });
+
+  // Máscara de telefone
+  document.getElementById("f-phone").addEventListener("input", (e) => {
+    let v = e.target.value.replace(/\D/g, "").slice(0, 11);
+    if (v.length > 6) {
+      e.target.value = "(" + v.slice(0,2) + ") " + v.slice(2,7) + "-" + v.slice(7);
+    } else if (v.length > 2) {
+      e.target.value = "(" + v.slice(0,2) + ") " + v.slice(2);
+    } else {
+      e.target.value = v;
+    }
+  });
+
+  document.getElementById("lead-form").addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const btn = e.target.querySelector('button[type="submit"]');
+    const originalText = btn.innerHTML;
+    btn.disabled = true;
+    btn.innerHTML = '<span class="spinner"></span> Enviando...';
+
+    const tier = getTier(score);
+    const payload = {
+      name: document.getElementById("f-name").value.trim(),
+      email: document.getElementById("f-email").value.trim(),
+      phone: document.getElementById("f-phone").value.trim(),
+      score,
+      tier: tier.title,
+    };
+
+    try {
+      const res = await fetch(SUPABASE_URL + "/rest/v1/leads", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "apikey": SUPABASE_KEY,
+          "Authorization": "Bearer " + SUPABASE_KEY,
+        },
+        body: JSON.stringify(payload),
+      });
+      if (!res.ok) throw new Error("Erro ao salvar");
+    } catch (err) {
+      console.error("Não foi possível salvar o lead:", err);
+      btn.disabled = false;
+      btn.innerHTML = originalText;
+      alert("Não foi possível enviar seus dados. Tente novamente.");
+      return;
+    }
+
+    btn.innerHTML = "Ver meu resultado";
+    showResult();
+  });
+
+  document.getElementById("whatsapp-btn").addEventListener("click", () => {
+    const tier = getTier(score);
+    const name = document.getElementById("f-name").value.trim();
+    const email = document.getElementById("f-email").value.trim();
+    const phone = document.getElementById("f-phone").value.trim();
+    let msg = "Oi! Fiz o teste de inglês do site e meu resultado foi \"" + tier.title + "\" (" + score + "/64). ";
+    if (name) msg = "Oi, meu nome é " + name + ". " + msg;
+    if (phone) msg += "Meu telefone: " + phone + ". ";
+    if (email) msg += "Meu e-mail: " + email + ". ";
+    msg += "Quero saber mais sobre os cursos!";
+    const url = "https://wa.me/" + WHATSAPP_NUMBER + "?text=" + encodeURIComponent(msg);
+    window.open(url, "_blank");
+    showScreen("success");
+  });
+
+  document.querySelectorAll("#restart-btn, #restart-btn-2").forEach(b => {
+    b.addEventListener("click", () => { current = 0; score = 0; showScreen("hero"); });
+  });
+})();
+</script>
+
+</body>
+</html>
