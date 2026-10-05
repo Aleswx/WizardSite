@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://wizard-horizontina.vercel.app/sitemap.xml
+Sitemap: https://wizardsite-site.vercel.app/sitemap.xml
