@@ -696,7 +696,7 @@ function renderTable(leads) {
         <td>${escapeHtml(l.email || "-")}</td>
         <td>${escapeHtml(l.phone || "-")}</td>
         <td><span class="tier-badge ${tierClass}">${escapeHtml(l.tier)}</span></td>
-        <td>${l.score}/64</td>
+        <td>${l.score}/32</td>
         <td>${date}</td>
       </tr>
     `;
