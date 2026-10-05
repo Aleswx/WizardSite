@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Página não encontrada — Wizard Horizontina</title>
+  <link rel="icon" type="image/png" href="favicon.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&family=Open+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    *{ box-sizing:border-box; margin:0; padding:0; }
+    body{
+      background: #1B2A6B;
+      background-image: url("bg-banner.webp");
+      background-size: cover;
+      background-position: center;
+      color: #1A1A1A;
+      font-family:'Open Sans', sans-serif;
+      min-height:100vh;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding: 24px 16px;
+      line-height:1.6;
+    }
+    .wrap{ width:100%; max-width: 480px; text-align:center; }
+    .card{
+      background: #FFFFFF;
+      border-radius: 24px;
+      box-shadow: 0 8px 40px rgba(0,0,0,.25);
+      overflow:hidden;
+    }
+    .accent-bar{ height:8px; background: linear-gradient(90deg, #E30613, #B8050F); }
+    .card-inner{ padding: 48px 36px 40px; }
+    .error-code{ font-size: 72px; font-weight: 900; color: #E30613; font-family: 'Montserrat', sans-serif; line-height: 1; margin-bottom: 8px; }
+    h1{ font-size: 24px; margin-bottom: 12px; font-family: 'Montserrat', sans-serif; }
+    p{ color: #666; font-size: 15px; margin-bottom: 28px; }
+    .btn{
+      display:inline-block; background: #E30613; color: #FFFFFF;
+      padding: 14px 32px; border-radius: 12px; text-decoration: none;
+      font-weight: 700; font-family: 'Montserrat', sans-serif;
+      transition: all .2s ease;
+    }
+    .btn:hover{ background: #B8050F; transform: translateY(-1px); }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="card">
+      <div class="accent-bar"></div>
+      <div class="card-inner">
+        <div class="error-code">404</div>
+        <h1>Página não encontrada</h1>
+        <p>A página que você procura não existe ou foi movida.</p>
+        <a href="/" class="btn">Voltar ao início</a>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

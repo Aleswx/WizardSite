@@ -4,21 +4,19 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Dashboard — Wizard Horizontina</title>
+  <link rel="icon" type="image/x-icon" href="favicon.ico" />
+  <link rel="icon" type="image/png" href="favicon.png" />
+  <link rel="apple-touch-icon" href="favicon.png" />
   <meta name="description" content="Dashboard de leads do teste de inglês da Wizard Horizontina - RS." />
   <meta property="og:title" content="Dashboard — Wizard Horizontina" />
   <meta property="og:description" content="Dashboard de leads do teste de inglês da Wizard Horizontina - RS." />
   <meta property="og:type" content="website" />
-  <!-- Google Analytics - Substitua G-XXXXXXXXXX pelo seu ID de medição -->
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
-  <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
-    gtag('config', 'G-XXXXXXXXXX');
-  </script>
+  <link rel="canonical" href="https://wizard-horizontina-dashboard.vercel.app/" />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preconnect" href="https://atbdbssnabaobxonzvhr.supabase.co" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&family=Open+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="chart.umd.min.js"></script>
   <style>
@@ -452,7 +450,7 @@
       </div>
       <div class="topbar-user">
         <span id="user-email"></span>
-        <button class="btn-logout" id="logout-btn">Sair</button>
+        <button class="btn-logout" id="logout-btn" aria-label="Sair do dashboard">Sair</button>
       </div>
     </div>
 
@@ -497,7 +495,7 @@
       <div class="table-card">
         <div class="table-header">
           <h3>Leads Recentes</h3>
-          <button class="btn-refresh" id="refresh-btn">Atualizar</button>
+          <button class="btn-refresh" id="refresh-btn" aria-label="Atualizar dados do dashboard">Atualizar</button>
         </div>
         <table>
           <thead>

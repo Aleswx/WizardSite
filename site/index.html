@@ -4,6 +4,9 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
   <title>Teste de Inglês — Wizard Horizontina</title>
+  <link rel="icon" type="image/x-icon" href="favicon.ico" />
+  <link rel="icon" type="image/png" href="favicon.png" />
+  <link rel="apple-touch-icon" href="favicon.png" />
   <meta name="description" content="Descubra seu nível de inglês em poucos minutos. Teste gratuito da Wizard Horizontina - RS." />
   <meta property="og:title" content="Teste de Inglês — Wizard Horizontina" />
   <meta property="og:description" content="Descubra seu nível de inglês em poucos minutos. Teste gratuito da Wizard Horizontina - RS." />
@@ -12,16 +15,10 @@
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="Teste de Inglês — Wizard Horizontina" />
   <meta name="twitter:description" content="Descubra seu nível de inglês em poucos minutos. Teste gratuito da Wizard Horizontina - RS." />
-  <!-- Google Analytics - Substitua G-XXXXXXXXXX pelo seu ID de medição -->
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
-  <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
-    gtag('config', 'G-XXXXXXXXXX');
-  </script>
+  <link rel="canonical" href="https://wizard-horizontina.vercel.app/" />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preconnect" href="https://atbdbssnabaobxonzvhr.supabase.co" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&family=Open+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
     :root{
@@ -218,7 +215,7 @@
           <li>Resultado rápido, com avaliação clara do seu nível</li>
           <li>100% gratuito e sem compromisso</li>
         </ul>
-        <button class="btn btn-primary" id="start-btn">Fazer o teste</button>
+        <button class="btn btn-primary" id="start-btn" aria-label="Iniciar teste de nível de inglês">Fazer o teste</button>
       </section>
 
       <!-- QUIZ -->
@@ -253,7 +250,7 @@
             <label for="f-consent">Aceito receber comunicação e ofertas da Wizard e outras marcas Pearson. Ver <a href="politica-privacidade.html" target="_blank">política de privacidade</a>.</label>
           </div>
 
-          <button class="btn btn-primary" type="submit">Ver meu resultado</button>
+          <button class="btn btn-primary" type="submit" aria-label="Enviar dados e ver resultado do teste">Ver meu resultado</button>
         </form>
       </section>
 
@@ -269,8 +266,8 @@
         <h3 class="form-title">Quer saber mais sobre nossos cursos?</h3>
         <p class="form-sub">Fale agora com nossa equipe pelo WhatsApp.</p>
 
-        <button class="btn btn-whatsapp" id="whatsapp-btn">Falar agora pelo WhatsApp</button>
-        <button class="btn btn-secondary" id="restart-btn">Refazer o teste</button>
+        <button class="btn btn-whatsapp" id="whatsapp-btn" aria-label="Abrir WhatsApp para falar com equipe">Falar agora pelo WhatsApp</button>
+        <button class="btn btn-secondary" id="restart-btn" aria-label="Refazer teste de nível de inglês">Refazer o teste</button>
       </section>
 
       <!-- SUCCESS -->
@@ -278,7 +275,7 @@
         <div class="success-icon">🎉</div>
         <h2 class="success-title">Sucesso!</h2>
         <p class="success-sub">Em breve, nossa equipe entrará em contato com você.</p>
-        <button class="btn btn-secondary" id="restart-btn-2">Voltar ao início</button>
+        <button class="btn btn-secondary" id="restart-btn-2" aria-label="Voltar ao início do teste">Voltar ao início</button>
       </section>
 
     </div>
@@ -286,8 +283,55 @@
 
   <div class="wizard-footer">
     <span class="pearson">Wizard by Pearson</span> — Maior rede de ensino de idiomas do mundo
+    <span style="margin-left: 12px; font-size: 11px;">
+      <a href="politica-privacidade.html" target="_blank" style="color: rgba(255,255,255,.6); text-decoration: underline;">Política de Privacidade</a>
+    </span>
   </div>
 </div>
+
+<!-- Aviso de Cookies (LGPD) -->
+<div id="cookie-banner" style="
+  display: none;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: rgba(15,15,26,.98);
+  backdrop-filter: blur(12px);
+  border-top: 1px solid rgba(255,255,255,.1);
+  padding: 16px 24px;
+  z-index: 1000;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+">
+  <p style="color: rgba(255,255,255,.8); font-size: 13px; max-width: 600px; margin: 0;">
+    Utilizamos cookies para melhorar sua experiência e analisar o tráfego do site. Ao continuar navegando, você concorda com nossa <a href="politica-privacidade.html" target="_blank" style="color: #E30613; text-decoration: underline;">Política de Privacidade</a>.
+  </p>
+  <button id="cookie-accept" style="
+    background: #E30613;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    padding: 10px 24px;
+    font-weight: 700;
+    font-size: 13px;
+    cursor: pointer;
+    white-space: nowrap;
+  ">Aceitar</button>
+</div>
+
+<script>
+  // Cookie banner
+  if (!localStorage.getItem('cookies-accepted')) {
+    document.getElementById('cookie-banner').style.display = 'flex';
+  }
+  document.getElementById('cookie-accept').addEventListener('click', function() {
+    localStorage.setItem('cookies-accepted', 'true');
+    document.getElementById('cookie-banner').style.display = 'none';
+  });
+</script>
 
 <script>
 (function(){
