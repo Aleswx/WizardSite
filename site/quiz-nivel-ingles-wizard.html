@@ -1,20 +1,20 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-  <title>Teste de Inglês — Wizard Horizontina</title>
+  <title>Teste de InglÃªs â€” Wizard Horizontina</title>
   <link rel="icon" type="image/x-icon" href="favicon.ico" />
   <link rel="icon" type="image/png" href="favicon.png" />
   <link rel="apple-touch-icon" href="favicon.png" />
-  <meta name="description" content="Descubra seu nível de inglês em poucos minutos. Teste gratuito da Wizard Horizontina - RS." />
-  <meta property="og:title" content="Teste de Inglês — Wizard Horizontina" />
-  <meta property="og:description" content="Descubra seu nível de inglês em poucos minutos. Teste gratuito da Wizard Horizontina - RS." />
+  <meta name="description" content="Descubra seu nÃ­vel de inglÃªs em poucos minutos. Teste gratuito da Wizard Horizontina - RS." />
+  <meta property="og:title" content="Teste de InglÃªs â€” Wizard Horizontina" />
+  <meta property="og:description" content="Descubra seu nÃ­vel de inglÃªs em poucos minutos. Teste gratuito da Wizard Horizontina - RS." />
   <meta property="og:type" content="website" />
   <meta property="og:image" content="logo-white.png" />
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="Teste de Inglês — Wizard Horizontina" />
-  <meta name="twitter:description" content="Descubra seu nível de inglês em poucos minutos. Teste gratuito da Wizard Horizontina - RS." />
+  <meta name="twitter:title" content="Teste de InglÃªs â€” Wizard Horizontina" />
+  <meta name="twitter:description" content="Descubra seu nÃ­vel de inglÃªs em poucos minutos. Teste gratuito da Wizard Horizontina - RS." />
   <link rel="canonical" href="https://wizardsite-site.vercel.app/quiz-nivel-ingles-wizard.html" />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -100,7 +100,7 @@
     .checklist{ list-style:none; padding:0; margin:0 0 30px; display:flex; flex-direction:column; gap:12px; }
     .checklist li{ display:flex; gap:10px; font-size:14.5px; color: var(--wizard-black); align-items:flex-start; }
     .checklist li::before{
-      content:"✓"; color: var(--wizard-white); background: var(--wizard-green);
+      content:"âœ“"; color: var(--wizard-white); background: var(--wizard-green);
       width:22px; height:22px; border-radius:50%; display:flex; align-items:center;
       justify-content:center; font-size:12px; font-weight:700; flex-shrink:0; margin-top:1px;
     }
@@ -156,6 +156,15 @@
       font-family:'Open Sans', sans-serif; font-size:15px; transition: border-color .2s ease;
     }
     .field input:focus{ outline:none; border-color: var(--wizard-red); background:var(--wizard-white); }
+    .field select{
+      width:100%; background:var(--wizard-grey-light); border:2px solid var(--wizard-track);
+      border-radius:var(--radius-sm); padding:14px 16px; color:var(--wizard-black);
+      font-family:'Open Sans',sans-serif; font-size:15px; transition:border-color .2s ease;
+      appearance:none; -webkit-appearance:none; -moz-appearance:none;
+      background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23666' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
+      background-repeat:no-repeat; background-position:right 16px center; padding-right:40px;
+    }
+    .field select:focus{ outline:none; border-color:var(--wizard-red); background-color:var(--wizard-white); }
 
     .consent{ display:flex; gap:10px; align-items:flex-start; margin: 20px 0 24px; }
     .consent input{ margin-top:3px; accent-color: var(--wizard-red); flex-shrink:0; width:18px; height:18px; }
@@ -207,15 +216,15 @@
 
       <!-- HERO -->
       <section class="screen active" id="screen-hero">
-        <p class="eyebrow">Teste de Nível</p>
-        <h1 class="hero-title">Qual é o seu <span class="hl">nível real</span> de inglês?</h1>
-        <p class="hero-sub">Descubra em poucos minutos onde você está e qual é o próximo passo ideal pra evoluir.</p>
+        <p class="eyebrow">Teste de NÃ­vel</p>
+        <h1 class="hero-title">Qual Ã© o seu <span class="hl">nÃ­vel real</span> de inglÃªs?</h1>
+        <p class="hero-sub">Descubra em poucos minutos onde vocÃª estÃ¡ e qual Ã© o prÃ³ximo passo ideal pra evoluir.</p>
         <ul class="checklist">
-          <li>Faça de onde estiver, no seu tempo</li>
-          <li>Resultado rápido, com avaliação clara do seu nível</li>
+          <li>FaÃ§a de onde estiver, no seu tempo</li>
+          <li>Resultado rÃ¡pido, com avaliaÃ§Ã£o clara do seu nÃ­vel</li>
           <li>100% gratuito e sem compromisso</li>
         </ul>
-        <button class="btn btn-primary" id="start-btn" aria-label="Iniciar teste de nível de inglês">Fazer o teste</button>
+        <button class="btn btn-primary" id="start-btn" aria-label="Iniciar teste de nÃ­vel de inglÃªs">Fazer o teste</button>
       </section>
 
       <!-- QUIZ -->
@@ -226,10 +235,10 @@
         <div class="options" id="q-options"></div>
       </section>
 
-      <!-- FORM (resultado bloqueado até preencher) -->
+      <!-- FORM (resultado bloqueado atÃ© preencher) -->
       <section class="screen" id="screen-form">
         <h3 class="form-title">Quer saber seu resultado?</h3>
-        <p class="form-sub">Preencha seus dados para descobrir seu nível de inglês e receber nosso contato.</p>
+        <p class="form-sub">Preencha seus dados para descobrir seu nÃ­vel de inglÃªs e receber nosso contato.</p>
 
         <form id="lead-form">
           <div class="field">
@@ -245,7 +254,7 @@
             <input id="f-phone" type="tel" required placeholder="(00) 00000-0000" />
           </div>
           <div class="field">
-            <label for="f-age">Faixa etária</label>
+            <label for="f-age">Faixa etÃ¡ria</label>
             <select id="f-age" required>
               <option value="">Selecione...</option>
               <option value="Menos de 15 anos">Menos de 15 anos</option>
@@ -257,11 +266,11 @@
             </select>
           </div>
           <div class="field">
-            <label for="f-studying">Já estuda inglês?</label>
+            <label for="f-studying">JÃ¡ estuda inglÃªs?</label>
             <select id="f-studying" required>
               <option value="">Selecione...</option>
               <option value="Sim">Sim</option>
-              <option value="Não">Não</option>
+              <option value="NÃ£o">NÃ£o</option>
             </select>
           </div>
           <div class="field" id="f-school-field" style="display:none;">
@@ -269,10 +278,10 @@
             <input id="f-school" type="text" placeholder="Nome da escola ou curso" />
           </div>
           <div class="field">
-            <label for="f-objective">Objetivo com inglês</label>
+            <label for="f-objective">Objetivo com inglÃªs</label>
             <select id="f-objective" required>
               <option value="">Selecione...</option>
-              <option value="Conversação">Conversação</option>
+              <option value="ConversaÃ§Ã£o">ConversaÃ§Ã£o</option>
               <option value="Viagem">Viagem</option>
               <option value="Trabalho">Trabalho</option>
               <option value="Estudos">Estudos</option>
@@ -284,7 +293,7 @@
             <select id="f-interest" required>
               <option value="">Selecione...</option>
               <option value="Alto">Alto</option>
-              <option value="Médio">Médio</option>
+              <option value="MÃ©dio">MÃ©dio</option>
               <option value="Baixo">Baixo</option>
             </select>
           </div>
@@ -293,10 +302,10 @@
             <input id="f-city" type="text" required placeholder="Sua cidade ou bairro" />
           </div>
           <div class="field">
-            <label for="f-time">Melhor horário para contato</label>
+            <label for="f-time">Melhor horÃ¡rio para contato</label>
             <select id="f-time" required>
               <option value="">Selecione...</option>
-              <option value="Manhã">Manhã</option>
+              <option value="ManhÃ£">ManhÃ£</option>
               <option value="Tarde">Tarde</option>
               <option value="Noite">Noite</option>
             </select>
@@ -304,14 +313,14 @@
 
           <div class="consent">
             <input type="checkbox" id="f-consent" required />
-            <label for="f-consent">Aceito receber comunicação e ofertas da Wizard e outras marcas Pearson. Ver <a href="politica-privacidade.html" target="_blank">política de privacidade</a>.</label>
+            <label for="f-consent">Aceito receber comunicaÃ§Ã£o e ofertas da Wizard e outras marcas Pearson. Ver <a href="politica-privacidade.html" target="_blank">polÃ­tica de privacidade</a>.</label>
           </div>
 
           <button class="btn btn-primary" type="submit" aria-label="Enviar dados e ver resultado do teste">Ver meu resultado</button>
         </form>
       </section>
 
-      <!-- RESULT (só aparece após preencher) -->
+      <!-- RESULT (sÃ³ aparece apÃ³s preencher) -->
       <section class="screen" id="screen-result">
         <p class="result-label">Seu Resultado</p>
         <h2 class="result-title" id="result-title"></h2>
@@ -324,24 +333,24 @@
         <p class="form-sub">Fale agora com nossa equipe pelo WhatsApp.</p>
 
         <button class="btn btn-whatsapp" id="whatsapp-btn" aria-label="Abrir WhatsApp para falar com equipe">Falar agora pelo WhatsApp</button>
-        <button class="btn btn-secondary" id="restart-btn" aria-label="Refazer teste de nível de inglês">Refazer o teste</button>
+        <button class="btn btn-secondary" id="restart-btn" aria-label="Refazer teste de nÃ­vel de inglÃªs">Refazer o teste</button>
       </section>
 
       <!-- SUCCESS -->
       <section class="screen" id="screen-success">
-        <div class="success-icon">🎉</div>
+        <div class="success-icon">ðŸŽ‰</div>
         <h2 class="success-title">Sucesso!</h2>
-        <p class="success-sub">Em breve, nossa equipe entrará em contato com você.</p>
-        <button class="btn btn-secondary" id="restart-btn-2" aria-label="Voltar ao início do teste">Voltar ao início</button>
+        <p class="success-sub">Em breve, nossa equipe entrarÃ¡ em contato com vocÃª.</p>
+        <button class="btn btn-secondary" id="restart-btn-2" aria-label="Voltar ao inÃ­cio do teste">Voltar ao inÃ­cio</button>
       </section>
 
     </div>
   </div>
 
   <div class="wizard-footer">
-    <span class="pearson">Wizard by Pearson</span> — Maior rede de ensino de idiomas do mundo
+    <span class="pearson">Wizard by Pearson</span> â€” Maior rede de ensino de idiomas do mundo
     <span style="margin-left: 12px; font-size: 11px;">
-      <a href="politica-privacidade.html" target="_blank" style="color: rgba(255,255,255,.6); text-decoration: underline;">Política de Privacidade</a>
+      <a href="politica-privacidade.html" target="_blank" style="color: rgba(255,255,255,.6); text-decoration: underline;">PolÃ­tica de Privacidade</a>
     </span>
   </div>
 </div>
@@ -364,7 +373,7 @@
   flex-wrap: wrap;
 ">
   <p style="color: rgba(255,255,255,.8); font-size: 13px; max-width: 600px; margin: 0;">
-    Utilizamos cookies para melhorar sua experiência e analisar o tráfego do site. Ao continuar navegando, você concorda com nossa <a href="politica-privacidade.html" target="_blank" style="color: #E30613; text-decoration: underline;">Política de Privacidade</a>.
+    Utilizamos cookies para melhorar sua experiÃªncia e analisar o trÃ¡fego do site. Ao continuar navegando, vocÃª concorda com nossa <a href="politica-privacidade.html" target="_blank" style="color: #E30613; text-decoration: underline;">PolÃ­tica de Privacidade</a>.
   </p>
   <button id="cookie-accept" style="
     background: #E30613;
@@ -592,10 +601,10 @@
   ];
 
   const tiers = [
-    { min:0, max:8, title:"Nível Iniciante", blurb:"Você ainda apoia bastante no português no dia a dia — e tudo bem, é exatamente daqui que todo mundo começa." },
-    { min:9, max:16, title:"Nível Básico a Intermediário", blurb:"Você já entende o essencial e está treinando o ouvido. Falta destravar a confiança pra parar de traduzir na cabeça." },
-    { min:17, max:24, title:"Nível Intermediário Avançado", blurb:"Você se vira bem em situações reais e já pensa em inglês boa parte do tempo." },
-    { min:25, max:32, title:"Nível Avançado", blurb:"Você lida com inglês quase como um nativo. A essa altura, é sobre refinar nuance e vocabulário." },
+    { min:0, max:8, title:"NÃ­vel Iniciante", blurb:"VocÃª ainda apoia bastante no portuguÃªs no dia a dia â€” e tudo bem, Ã© exatamente daqui que todo mundo comeÃ§a." },
+    { min:9, max:16, title:"NÃ­vel BÃ¡sico a IntermediÃ¡rio", blurb:"VocÃª jÃ¡ entende o essencial e estÃ¡ treinando o ouvido. Falta destravar a confianÃ§a pra parar de traduzir na cabeÃ§a." },
+    { min:17, max:24, title:"NÃ­vel IntermediÃ¡rio AvanÃ§ado", blurb:"VocÃª se vira bem em situaÃ§Ãµes reais e jÃ¡ pensa em inglÃªs boa parte do tempo." },
+    { min:25, max:32, title:"NÃ­vel AvanÃ§ado", blurb:"VocÃª lida com inglÃªs quase como um nativo. A essa altura, Ã© sobre refinar nuance e vocabulÃ¡rio." },
   ];
 
   let current = 0, score = 0;
@@ -676,7 +685,7 @@
     }
   });
 
-  // Máscara de telefone
+  // MÃ¡scara de telefone
   document.getElementById("f-phone").addEventListener("input", (e) => {
     let v = e.target.value.replace(/\D/g, "").slice(0, 11);
     if (v.length > 6) {
@@ -723,10 +732,10 @@
       });
       if (!res.ok) throw new Error("Erro ao salvar");
     } catch (err) {
-      console.error("Não foi possível salvar o lead:", err);
+      console.error("NÃ£o foi possÃ­vel salvar o lead:", err);
       btn.disabled = false;
       btn.innerHTML = originalText;
-      alert("Não foi possível enviar seus dados. Tente novamente.");
+      alert("NÃ£o foi possÃ­vel enviar seus dados. Tente novamente.");
       return;
     }
 
@@ -739,8 +748,8 @@
     const name = document.getElementById("f-name").value.trim();
     const email = document.getElementById("f-email").value.trim();
     const phone = document.getElementById("f-phone").value.trim();
-    let msg = "Oi! Fiz o teste de inglês do site e meu resultado foi \"" + tier.title + "\" (" + score + "/32). ";
-    if (name) msg = "Oi, meu nome é " + name + ". " + msg;
+    let msg = "Oi! Fiz o teste de inglÃªs do site e meu resultado foi \"" + tier.title + "\" (" + score + "/32). ";
+    if (name) msg = "Oi, meu nome Ã© " + name + ". " + msg;
     if (phone) msg += "Meu telefone: " + phone + ". ";
     if (email) msg += "Meu e-mail: " + email + ". ";
     msg += "Quero saber mais sobre os cursos!";
