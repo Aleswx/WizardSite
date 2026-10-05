@@ -244,6 +244,63 @@
             <label for="f-phone">Telefone (com DDD)</label>
             <input id="f-phone" type="tel" required placeholder="(00) 00000-0000" />
           </div>
+          <div class="field">
+            <label for="f-age">Faixa etária</label>
+            <select id="f-age" required>
+              <option value="">Selecione...</option>
+              <option value="Menos de 15 anos">Menos de 15 anos</option>
+              <option value="15-17 anos">15-17 anos</option>
+              <option value="18-24 anos">18-24 anos</option>
+              <option value="25-34 anos">25-34 anos</option>
+              <option value="35-44 anos">35-44 anos</option>
+              <option value="45+ anos">45+ anos</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="f-studying">Já estuda inglês?</label>
+            <select id="f-studying" required>
+              <option value="">Selecione...</option>
+              <option value="Sim">Sim</option>
+              <option value="Não">Não</option>
+            </select>
+          </div>
+          <div class="field" id="f-school-field" style="display:none;">
+            <label for="f-school">Onde estuda?</label>
+            <input id="f-school" type="text" placeholder="Nome da escola ou curso" />
+          </div>
+          <div class="field">
+            <label for="f-objective">Objetivo com inglês</label>
+            <select id="f-objective" required>
+              <option value="">Selecione...</option>
+              <option value="Conversação">Conversação</option>
+              <option value="Viagem">Viagem</option>
+              <option value="Trabalho">Trabalho</option>
+              <option value="Estudos">Estudos</option>
+              <option value="Outro">Outro</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="f-interest">Interesse em curso</label>
+            <select id="f-interest" required>
+              <option value="">Selecione...</option>
+              <option value="Alto">Alto</option>
+              <option value="Médio">Médio</option>
+              <option value="Baixo">Baixo</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="f-city">Cidade/Bairro</label>
+            <input id="f-city" type="text" required placeholder="Sua cidade ou bairro" />
+          </div>
+          <div class="field">
+            <label for="f-time">Melhor horário para contato</label>
+            <select id="f-time" required>
+              <option value="">Selecione...</option>
+              <option value="Manhã">Manhã</option>
+              <option value="Tarde">Tarde</option>
+              <option value="Noite">Noite</option>
+            </select>
+          </div>
 
           <div class="consent">
             <input type="checkbox" id="f-consent" required />
@@ -606,6 +663,19 @@
     showScreen("quiz");
   });
 
+  // Mostrar/esconder campo "Onde estuda?"
+  document.getElementById("f-studying").addEventListener("change", (e) => {
+    const schoolField = document.getElementById("f-school-field");
+    if (e.target.value === "Sim") {
+      schoolField.style.display = "block";
+      document.getElementById("f-school").required = true;
+    } else {
+      schoolField.style.display = "none";
+      document.getElementById("f-school").required = false;
+      document.getElementById("f-school").value = "";
+    }
+  });
+
   // Máscara de telefone
   document.getElementById("f-phone").addEventListener("input", (e) => {
     let v = e.target.value.replace(/\D/g, "").slice(0, 11);
@@ -630,6 +700,13 @@
       name: document.getElementById("f-name").value.trim(),
       email: document.getElementById("f-email").value.trim(),
       phone: document.getElementById("f-phone").value.trim(),
+      age: document.getElementById("f-age").value,
+      studying: document.getElementById("f-studying").value,
+      school: document.getElementById("f-school").value.trim(),
+      objective: document.getElementById("f-objective").value,
+      interest: document.getElementById("f-interest").value,
+      city: document.getElementById("f-city").value.trim(),
+      best_time: document.getElementById("f-time").value,
       score,
       tier: tier.title,
     };

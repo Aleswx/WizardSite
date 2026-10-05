@@ -313,7 +313,10 @@
       border-radius: var(--radius-lg);
       box-shadow: 0 8px 32px rgba(0,0,0,.3);
       border: 1px solid var(--wizard-track);
-      overflow: hidden;
+      overflow-x: auto;
+    }
+    .table-card table{
+      min-width: 1200px;
     }
     .table-header{
       padding: 24px 28px;
@@ -503,6 +506,13 @@
               <th>Nome</th>
               <th>E-mail</th>
               <th>Telefone</th>
+              <th>Idade</th>
+              <th>Estuda Inglês</th>
+              <th>Onde Estuda</th>
+              <th>Objetivo</th>
+              <th>Interesse</th>
+              <th>Cidade/Bairro</th>
+              <th>Melhor Horário</th>
               <th>Nível</th>
               <th>Pontuação</th>
               <th>Data</th>
@@ -510,7 +520,7 @@
           </thead>
           <tbody id="leads-body">
             <tr>
-              <td colspan="6">
+              <td colspan="12">
                 <div class="empty-state">
                   <div class="empty-state-icon">📊</div>
                   <p>Carregando dados...</p>
@@ -671,7 +681,7 @@ function renderTable(leads) {
   if (leads.length === 0) {
     tbody.innerHTML = `
       <tr>
-        <td colspan="6">
+        <td colspan="12">
           <div class="empty-state">
             <div class="empty-state-icon">📭</div>
             <p>Nenhum lead capturado ainda</p>
@@ -695,6 +705,13 @@ function renderTable(leads) {
         <td><strong>${escapeHtml(l.name)}</strong></td>
         <td>${escapeHtml(l.email || "-")}</td>
         <td>${escapeHtml(l.phone || "-")}</td>
+        <td>${escapeHtml(l.age || "-")}</td>
+        <td>${escapeHtml(l.studying || "-")}</td>
+        <td>${escapeHtml(l.school || "-")}</td>
+        <td>${escapeHtml(l.objective || "-")}</td>
+        <td>${escapeHtml(l.interest || "-")}</td>
+        <td>${escapeHtml(l.city || "-")}</td>
+        <td>${escapeHtml(l.best_time || "-")}</td>
         <td><span class="tier-badge ${tierClass}">${escapeHtml(l.tier)}</span></td>
         <td>${l.score}/32</td>
         <td>${date}</td>
