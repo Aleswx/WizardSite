@@ -314,9 +314,13 @@
       border-radius: var(--radius-lg);
       box-shadow: 0 8px 32px rgba(0,0,0,.3);
       border: 1px solid var(--wizard-track);
-      overflow-x: auto;
+      overflow: hidden;
     }
-    .table-card table{
+    .table-scroll{
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+    }
+    .table-scroll table{
       min-width: 1200px;
     }
     .table-header{
@@ -501,6 +505,7 @@
           <h3>Leads Recentes</h3>
           <button class="btn-refresh" id="refresh-btn" aria-label="Atualizar dados do dashboard">Atualizar</button>
         </div>
+        <div class="table-scroll">
         <table>
           <thead>
             <tr>
@@ -530,6 +535,7 @@
             </tr>
           </tbody>
         </table>
+        </div>
       </div>
     </div>
   </div>
