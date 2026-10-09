@@ -87,12 +87,13 @@
       background: var(--wizard-white);
       border-radius: var(--radius-xl);
       box-shadow: var(--shadow-lg);
-      /* Sem overflow:hidden — em mobile ele impede a rolagem até o campo focado */
+      /* Corta a barra vermelha junto com os cantos arredondados do card */
+      overflow: hidden;
     }
     .accent-bar{
       height:8px;
       background: linear-gradient(90deg, var(--wizard-red), var(--wizard-red-dark));
-      border-radius: var(--radius-xl) var(--radius-xl) 0 0;
+      border-radius:0;
     }
     .card-inner{ padding: 40px 34px 36px; }
 
