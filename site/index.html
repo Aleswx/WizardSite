@@ -41,7 +41,11 @@
       --radius-xl: 24px;
     }
     *{ box-sizing:border-box; margin:0; padding:0; }
-    html,body{ height:100%; }
+    html{
+      -webkit-text-size-adjust:100%;
+      /* Deixa espaço para o campo focado subir acima do teclado do celular */
+      scroll-padding-bottom:160px;
+    }
     body{
       background: var(--wizard-blue);
       background-image: url("bg-banner.webp");
@@ -50,12 +54,16 @@
       background-attachment: fixed;
       color: var(--wizard-black);
       font-family:'Open Sans', sans-serif;
+      /* min-height (e não height) permite a página crescer e rolar normalmente */
       min-height:100vh;
+      min-height:100dvh;
       display:flex;
       align-items:center;
       justify-content:center;
       padding: 24px 16px;
+      padding-bottom: max(24px, env(safe-area-inset-bottom));
       line-height:1.6;
+      overflow-x:hidden;
     }
     h1,h2,h3,h4{ font-family:'Montserrat', sans-serif; font-weight:800; letter-spacing:-0.02em; }
 
@@ -79,9 +87,13 @@
       background: var(--wizard-white);
       border-radius: var(--radius-xl);
       box-shadow: var(--shadow-lg);
-      overflow:hidden;
+      /* Sem overflow:hidden — em mobile ele impede a rolagem até o campo focado */
     }
-    .accent-bar{ height:8px; background: linear-gradient(90deg, var(--wizard-red), var(--wizard-red-dark)); }
+    .accent-bar{
+      height:8px;
+      background: linear-gradient(90deg, var(--wizard-red), var(--wizard-red-dark));
+      border-radius: var(--radius-xl) var(--radius-xl) 0 0;
+    }
     .card-inner{ padding: 40px 34px 36px; }
 
     /* Screens */
@@ -155,6 +167,8 @@
       border-radius: var(--radius-sm); padding:14px 16px; color:var(--wizard-black);
       font-family:'Open Sans', sans-serif; font-size:16px; transition: border-color .2s ease;
       -webkit-appearance:none; -moz-appearance:none; appearance:none;
+      /* Garante espaço para o campo subir acima do teclado ao receber foco */
+      scroll-margin-bottom:160px;
     }
     .field input:focus, .field select:focus{ outline:none; border-color: var(--wizard-red); background:var(--wizard-white); }
     .field select{
