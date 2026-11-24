@@ -247,17 +247,34 @@
     <div class="accent-bar"></div>
     <div class="card-inner">
 
-      <!-- HERO -->
-      <section class="screen active" id="screen-hero">
-        <p class="eyebrow">Teste de Nível</p>
-        <h1 class="hero-title">Quanto inglês você <span class="hl">já sabe</span>?</h1>
-        <p class="hero-sub">Descubra com nosso teste gratuito em poucos minutos e dê o próximo passo pra evoluir.</p>
-        <ul class="checklist">
-          <li>Faça de onde estiver, no seu tempo</li>
-          <li>Resultado rápido, com avaliação clara do seu nível</li>
-          <li>100% gratuito e sem compromisso</li>
-        </ul>
-        <button class="btn btn-primary" id="start-btn" aria-label="Iniciar teste de nível de inglês">Fazer o teste</button>
+      <!-- REGISTER (cadastro antes do teste) -->
+      <section class="screen active" id="screen-register">
+        <p class="eyebrow">Cadastro</p>
+        <h1 class="hero-title">Queremos saber você!</h1>
+        <p class="hero-sub">Preencha seus dados e comece o teste de nível de inglês.</p>
+        <form id="register-form">
+          <div class="field">
+            <label for="r-name">Nome *</label>
+            <input id="r-name" type="text" required placeholder="Seu nome completo" />
+          </div>
+          <div class="field">
+            <label for="r-phone">Telefone (com DDD) *</label>
+            <input id="r-phone" type="tel" required placeholder="(00) 00000-0000" />
+          </div>
+          <div class="field">
+            <label for="r-email">E-mail <span style="color:var(--wizard-muted); font-weight:400;">(opcional)</span></label>
+            <input id="r-email" type="email" placeholder="voce@email.com" />
+          </div>
+          <div class="field">
+            <label for="r-whatsapp">WhatsApp <span style="color:var(--wizard-muted); font-weight:400;">(opcional)</span></label>
+            <input id="r-whatsapp" type="tel" placeholder="(00) 00000-0000" />
+          </div>
+          <div class="consent">
+            <input type="checkbox" id="r-privacy" required />
+            <label for="r-privacy">Li e aceito a <a href="politica-privacidade.html" target="_blank">Política de Privacidade</a>. *</label>
+          </div>
+          <button class="btn btn-primary" type="submit" id="start-btn" aria-label="Iniciar teste de nível de inglês">Fazer o teste</button>
+        </form>
       </section>
 
       <!-- QUIZ -->
@@ -268,114 +285,12 @@
         <div class="options" id="q-options"></div>
       </section>
 
-      <!-- RESULT + FORM (resultado aparece imediatamente, formulário é opcional) -->
+      <!-- RESULT (mostra após o teste) -->
       <section class="screen" id="screen-result">
         <p class="result-label">Seu Resultado</p>
         <h2 class="result-title" id="result-title"></h2>
         <p class="result-blurb" id="result-blurb"></p>
         <span class="score-chip" id="result-score"></span>
-
-        <div class="divider"></div>
-
-        <h3 class="form-title">Quer receber nosso contato?</h3>
-        <p class="form-sub">Preencha apenas nome e telefone. Os demais campos são opcionais.</p>
-
-        <form id="lead-form">
-          <div class="field">
-            <label for="f-name">Nome *</label>
-            <input id="f-name" type="text" required placeholder="Seu nome completo" />
-          </div>
-          <div class="field">
-            <label for="f-phone">Telefone (com DDD) *</label>
-            <input id="f-phone" type="tel" required placeholder="(00) 00000-0000" />
-          </div>
-          <div class="field">
-            <label for="f-email">E-mail <span style="color:var(--wizard-muted); font-weight:400;">(opcional)</span></label>
-            <input id="f-email" type="email" placeholder="voce@email.com" />
-          </div>
-          <div class="field">
-            <label for="f-age">Faixa etária <span style="color:var(--wizard-muted); font-weight:400;">(opcional)</span></label>
-            <select id="f-age">
-              <option value="">Selecione...</option>
-              <option value="Menos de 15 anos">Menos de 15 anos</option>
-              <option value="15-17 anos">15-17 anos</option>
-              <option value="18-24 anos">18-24 anos</option>
-              <option value="25-34 anos">25-34 anos</option>
-              <option value="35-44 anos">35-44 anos</option>
-              <option value="45+ anos">45+ anos</option>
-            </select>
-          </div>
-
-          <!-- Campos de responsável (aparecem se menor de 18) -->
-          <div id="guardian-fields" style="display:none; background:var(--wizard-grey-bg); border-radius:var(--radius-md); padding:16px; margin-bottom:16px;">
-            <p style="font-size:13px; font-weight:700; color:var(--wizard-black); margin-bottom:12px;">Dados do responsável (obrigatório para menores de 18 anos)</p>
-            <div class="field">
-              <label for="f-guardian-name">Nome do responsável *</label>
-              <input id="f-guardian-name" type="text" placeholder="Nome completo do responsável" />
-            </div>
-            <div class="field" style="margin-bottom:0;">
-              <label for="f-guardian-phone">Telefone do responsável *</label>
-              <input id="f-guardian-phone" type="tel" placeholder="(00) 00000-0000" />
-            </div>
-          </div>
-
-          <div class="field">
-            <label for="f-studying">Já estuda inglês? <span style="color:var(--wizard-muted); font-weight:400;">(opcional)</span></label>
-            <select id="f-studying">
-              <option value="">Selecione...</option>
-              <option value="Sim">Sim</option>
-              <option value="Não">Não</option>
-            </select>
-          </div>
-          <div class="field" id="f-school-field" style="display:none;">
-            <label for="f-school">Onde estuda? <span style="color:var(--wizard-muted); font-weight:400;">(opcional)</span></label>
-            <input id="f-school" type="text" placeholder="Nome da escola ou curso" />
-          </div>
-          <div class="field">
-            <label for="f-objective">Objetivo com inglês <span style="color:var(--wizard-muted); font-weight:400;">(opcional)</span></label>
-            <select id="f-objective">
-              <option value="">Selecione...</option>
-              <option value="Conversação">Conversação</option>
-              <option value="Viagem">Viagem</option>
-              <option value="Trabalho">Trabalho</option>
-              <option value="Estudos">Estudos</option>
-              <option value="Outro">Outro</option>
-            </select>
-          </div>
-          <div class="field">
-            <label for="f-interest">Interesse em curso <span style="color:var(--wizard-muted); font-weight:400;">(opcional)</span></label>
-            <select id="f-interest">
-              <option value="">Selecione...</option>
-              <option value="Alto">Alto</option>
-              <option value="Médio">Médio</option>
-              <option value="Baixo">Baixo</option>
-            </select>
-          </div>
-          <div class="field">
-            <label for="f-city">Cidade/Bairro <span style="color:var(--wizard-muted); font-weight:400;">(opcional)</span></label>
-            <input id="f-city" type="text" placeholder="Sua cidade ou bairro" />
-          </div>
-          <div class="field">
-            <label for="f-time">Melhor horário para contato <span style="color:var(--wizard-muted); font-weight:400;">(opcional)</span></label>
-            <select id="f-time">
-              <option value="">Selecione...</option>
-              <option value="Manhã">Manhã</option>
-              <option value="Tarde">Tarde</option>
-              <option value="Noite">Noite</option>
-            </select>
-          </div>
-
-          <div class="consent">
-            <input type="checkbox" id="f-privacy" required />
-            <label for="f-privacy">Li e aceito a <a href="politica-privacidade.html" target="_blank">Política de Privacidade</a>. *</label>
-          </div>
-          <div class="consent">
-            <input type="checkbox" id="f-whatsapp-consent" />
-            <label for="f-whatsapp-consent">Aceito receber ofertas e contato comercial da Wizard pelo WhatsApp. <span style="color:var(--wizard-muted);">(opcional)</span></label>
-          </div>
-
-          <button class="btn btn-primary" type="submit" aria-label="Enviar dados do formulário">Enviar</button>
-        </form>
 
         <div class="divider"></div>
 
@@ -657,10 +572,10 @@
     { min:25, max:32, title:"Nível Avançado", blurb:"Você lida com inglês quase como um nativo. A essa altura, é sobre refinar nuance e vocabulário." },
   ];
 
-  let current = 0, score = 0;
+  let current = 0, score = 0, leadId = null;
 
   const screens = {
-    hero: document.getElementById("screen-hero"),
+    register: document.getElementById("screen-register"),
     quiz: document.getElementById("screen-quiz"),
     result: document.getElementById("screen-result"),
     success: document.getElementById("screen-success"),
@@ -668,6 +583,34 @@
   function showScreen(name){
     Object.values(screens).forEach(s => s.classList.remove("active"));
     screens[name].classList.add("active");
+  }
+
+  // Inicia o teste
+  function startTest(){
+    current = 0; score = 0;
+    renderQuestion();
+    showScreen("quiz");
+  }
+
+  // Finaliza o teste: atualiza o lead, mostra o resultado e dispara eventos
+  function completeTest(){
+    const tier = getTier(score);
+    if (leadId) {
+      fetch(SUPABASE_URL + "/rest/v1/leads?id=eq." + leadId, {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+          "apikey": SUPABASE_KEY,
+          "Authorization": "Bearer " + SUPABASE_KEY,
+        },
+        body: JSON.stringify({ score, tier: tier.title }),
+      }).catch(() => {});
+    }
+    // Dispara evento Lead no Meta Pixel
+    if (typeof fbq === 'function' && leadId) {
+      fbq('track', 'Lead', { lead_id: leadId, content_name: tier.title });
+    }
+    showResult();
   }
 
   function renderQuestion(){
@@ -701,10 +644,10 @@
       } else {
         document.getElementById("progress-fill").style.width = "100%";
         // Dispara evento TesteConcluido no Meta Pixel
-        if (typeof fbq === 'function') {
-          fbq('track', 'TesteConcluido', { score: score });
+        if (typeof fbq === 'function' && leadId) {
+          fbq('track', 'TesteConcluido', { score: score, lead_id: leadId });
         }
-        setTimeout(() => showResult(), 250);
+        setTimeout(() => completeTest(), 250);
       }
     }, 380);
   }
@@ -719,43 +662,11 @@
     showScreen("result");
   }
 
-  document.getElementById("start-btn").addEventListener("click", () => {
-    current = 0; score = 0;
-    renderQuestion();
-    showScreen("quiz");
-  });
+  // Iniciando o teste depois de cadastrado
+  document.getElementById("start-btn").addEventListener("click", () => startTest());
 
-  // Mostrar/esconder campos de responsável (se menor de 18)
-  document.getElementById("f-age").addEventListener("change", (e) => {
-    const guardianFields = document.getElementById("guardian-fields");
-    const guardianName = document.getElementById("f-guardian-name");
-    const guardianPhone = document.getElementById("f-guardian-phone");
-    if (e.target.value === "Menos de 15 anos" || e.target.value === "15-17 anos") {
-      guardianFields.style.display = "block";
-      guardianName.required = true;
-      guardianPhone.required = true;
-    } else {
-      guardianFields.style.display = "none";
-      guardianName.required = false;
-      guardianPhone.required = false;
-      guardianName.value = "";
-      guardianPhone.value = "";
-    }
-  });
-
-  // Mostrar/esconder campo "Onde estuda?"
-  document.getElementById("f-studying").addEventListener("change", (e) => {
-    const schoolField = document.getElementById("f-school-field");
-    if (e.target.value === "Sim") {
-      schoolField.style.display = "block";
-    } else {
-      schoolField.style.display = "none";
-      document.getElementById("f-school").value = "";
-    }
-  });
-
-  // Máscara de telefone
-  document.getElementById("f-phone").addEventListener("input", (e) => {
+  // Máscara de telefone do formulário de cadastro
+  document.getElementById("r-phone").addEventListener("input", (e) => {
     let v = e.target.value.replace(/\D/g, "").slice(0, 11);
     if (v.length > 6) {
       e.target.value = "(" + v.slice(0,2) + ") " + v.slice(2,7) + "-" + v.slice(7);
@@ -766,31 +677,18 @@
     }
   });
 
-  document.getElementById("lead-form").addEventListener("submit", async (e) => {
+  // Cadastrar pessoa antes de começar o teste (usando fetch direto — o Supabase REST funciona,
+  // mas a biblioteca supabase-js pode falhar em respostas com corpo vazio)
+  document.getElementById("register-form").addEventListener("submit", async (e) => {
     e.preventDefault();
-    const btn = e.target.querySelector('button[type="submit"]');
-    const originalText = btn.innerHTML;
+    const btn = document.getElementById("start-btn");
     btn.disabled = true;
-    btn.innerHTML = '<span class="spinner"></span> Enviando...';
+    btn.innerHTML = '<span class="spinner"></span> Fazendo...';
 
-    const tier = getTier(score);
-    const payload = {
-      name: document.getElementById("f-name").value.trim(),
-      email: document.getElementById("f-email").value.trim(),
-      phone: document.getElementById("f-phone").value.trim(),
-      age: document.getElementById("f-age").value,
-      guardian_name: document.getElementById("f-guardian-name").value.trim(),
-      guardian_phone: document.getElementById("f-guardian-phone").value.trim(),
-      studying: document.getElementById("f-studying").value,
-      school: document.getElementById("f-school").value.trim(),
-      objective: document.getElementById("f-objective").value,
-      interest: document.getElementById("f-interest").value,
-      city: document.getElementById("f-city").value.trim(),
-      best_time: document.getElementById("f-time").value,
-      whatsapp_consent: document.getElementById("f-whatsapp-consent").checked ? "Sim" : "Não",
-      score,
-      tier: tier.title,
-    };
+    const name = document.getElementById("r-name").value.trim();
+    const phone = document.getElementById("r-phone").value.trim();
+    const email = document.getElementById("r-email").value.trim();
+    const whatsapp = document.getElementById("r-whatsapp").value.trim();
 
     try {
       const res = await fetch(SUPABASE_URL + "/rest/v1/leads", {
@@ -800,44 +698,80 @@
           "apikey": SUPABASE_KEY,
           "Authorization": "Bearer " + SUPABASE_KEY,
         },
-        body: JSON.stringify(payload),
+        body: JSON.stringify({
+          name,
+          phone,
+          email: email || null,
+          whatsapp_consent: whatsapp ? "Sim" : "Não",
+          score: 0,
+          tier: "Pendente",
+        }),
       });
-      if (!res.ok) throw new Error("Erro ao salvar");
-    } catch (err) {
-      console.error("Não foi possível salvar o lead:", err);
+      if (!res.ok) throw new Error("Erro ao cadastrar (" + res.status + ")");
+
+      // Busca o último lead cadastrado pelo telefone (endpoint não devolve id nesta resposta)
+      var qs = new URLSearchParams({ order: "created_at.desc", limit: "1", phone: "eq." + phone }).toString().replace(/\+/g, "%20");
+      var getRes = await fetch(SUPABASE_URL + "/rest/v1/leads?" + qs, {
+        headers: { "apikey": SUPABASE_KEY, "Authorization": "Bearer " + SUPABASE_KEY },
+      });
+      const leads = await getRes.json();
+      leadId = leads && leads[0] ? leads[0].id : null;
+
+      // Dispara evento Lead no Meta Pixel após confirmação do cadastro
+      if (typeof fbq === 'function' && leadId) {
+        fbq('track', 'Lead', { lead_id: leadId });
+      }
+
       btn.disabled = false;
-      btn.innerHTML = originalText;
-      alert("Não foi possível enviar seus dados. Tente novamente.");
-      return;
+      startTest();
+    } catch (err) {
+      console.error("Erro ao cadastrar:", err);
+      alert("Não foi possível cadastrar. Tente novamente.");
+      btn.disabled = false;
+      btn.innerHTML = "Fazer o teste";
     }
+  });
 
-    // Dispara evento Lead no Meta Pixel (apenas após confirmação do envio)
-    if (typeof fbq === 'function') {
-      fbq('track', 'Lead', { content_name: tier.title, value: score });
-    }
-
-    btn.innerHTML = "Enviado!";
-    showScreen("success");
+  // WhatsApp usa os dados do cadastro
+  let cadastroDados = {};
+  document.getElementById("register-form").addEventListener("submit", () => {
+    cadastroDados = {
+      name: document.getElementById("r-name").value.trim(),
+      phone: document.getElementById("r-phone").value.trim(),
+      email: document.getElementById("r-email").value.trim(),
+    };
   });
 
   document.getElementById("whatsapp-btn").addEventListener("click", () => {
     const tier = getTier(score);
-    const name = document.getElementById("f-name").value.trim();
-    const email = document.getElementById("f-email").value.trim();
-    const phone = document.getElementById("f-phone").value.trim();
     let msg = "Oi! Fiz o teste de inglês do site e meu resultado foi \"" + tier.title + "\" (" + score + "/32). ";
-    if (name) msg = "Oi, meu nome é " + name + ". " + msg;
-    if (phone) msg += "Meu telefone: " + phone + ". ";
-    if (email) msg += "Meu e-mail: " + email + ". ";
+    if (cadastroDados.name) msg = "Oi, meu nome é " + cadastroDados.name + ". " + msg;
+    if (cadastroDados.phone) msg += "Meu telefone: " + cadastroDados.phone + ". ";
+    if (cadastroDados.email) msg += "Meu e-mail: " + cadastroDados.email + ". ";
     msg += "Quero saber mais sobre os cursos!";
     const url = "https://wa.me/" + WHATSAPP_NUMBER + "?text=" + encodeURIComponent(msg);
     window.open(url, "_blank");
     showScreen("success");
   });
 
+  // Refazer o teste: reseta e volta para o cadastro
   document.querySelectorAll("#restart-btn, #restart-btn-2").forEach(b => {
-    b.addEventListener("click", () => { current = 0; score = 0; showScreen("hero"); });
+    b.addEventListener("click", () => {
+      current = 0; score = 0; leadId = null; cadastroDados = {};
+      showScreen("register");
+    });
   });
+
+  // Debug/teste (temporário)
+  window.__state = function(){ return { leadId, score, current, cadastroDados }; };
+  window.__autoAnswer = async function(){
+    for (var i = 0; i < questions.length; i++) {
+      var btns = document.querySelectorAll('#q-options button');
+      if (btns[0]) btns[0].click();
+      await new Promise(function(r){ setTimeout(r, 450); });
+    }
+    await new Promise(function(r){ setTimeout(r, 600); });
+  };
 })();
 </script>
 
