@@ -762,16 +762,6 @@
     });
   });
 
-  // Debug/teste (temporário)
-  window.__state = function(){ return { leadId, score, current, cadastroDados }; };
-  window.__autoAnswer = async function(){
-    for (var i = 0; i < questions.length; i++) {
-      var btns = document.querySelectorAll('#q-options button');
-      if (btns[0]) btns[0].click();
-      await new Promise(function(r){ setTimeout(r, 450); });
-    }
-    await new Promise(function(r){ setTimeout(r, 600); });
-  };
 })();
 </script>
 
