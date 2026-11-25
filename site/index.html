@@ -643,9 +643,9 @@
         renderQuestion();
       } else {
         document.getElementById("progress-fill").style.width = "100%";
-        // Dispara evento TesteConcluido no Meta Pixel
+        // Dispara evento TesteConcluido no Meta Pixel (evento customizado: use trackCustom)
         if (typeof fbq === 'function' && leadId) {
-          fbq('track', 'TesteConcluido', { score: score, lead_id: leadId });
+          fbq('trackCustom', 'TesteConcluido', { score: score, lead_id: leadId });
         }
         setTimeout(() => completeTest(), 250);
       }
